@@ -192,4 +192,9 @@ public class Bus implements java.io.Serializable {
     public boolean removeMessages(String boxName) {
         return this.boxMap.remove(boxName) != null;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

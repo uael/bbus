@@ -15,6 +15,18 @@
         </sourceRoots>
       </configuration>
     </facet>
+    <facet type="Spring" name="Spring">
+      <configuration>
+        <fileset id="fileset" name="Spring Application Context" removed="false">
+          <dependency>initializer unice.s3a.config.WebAppInitializer root context</dependency>
+          <file>file://$MODULE_DIR$/src/main/java/unice/s3a/config/ApplicationConfig.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/unice/s3a/config/JpaConfig.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/unice/s3a/config/MongoConfig.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/unice/s3a/config/SecurityConfig.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/unice/s3a/config/WebMvcConfig.java</file>
+        </fileset>
+      </configuration>
+    </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/target/classes" />

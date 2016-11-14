@@ -11,11 +11,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import unice.s3a.support.web.MessageHelper;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 class BusController {
 
-    private static final String CREATE = "bus/create";
+    static final String CREATE = "bus/create";
+    static final String DELETE = "bus/delete";
 
     @Autowired
     private BusService busService;
@@ -32,6 +35,27 @@ class BusController {
             return CREATE;
         }
         busService.save(busCreateForm.createBus());
+        MessageHelper.addSuccessAttribute(ra, CREATE+".success");
+        return "redirect:/";
+    }
+
+    @ModelAttribute("buses")
+    public List<Bus> populateBuses() {
+        return new ArrayList<>(busService.findAll().values());
+    }
+
+    @RequestMapping(value = DELETE)
+    public String delete(Model model) {
+        model.addAttribute(new BusDeleteForm());
+        return DELETE;
+    }
+
+    @RequestMapping(value = DELETE, method = RequestMethod.POST)
+    public String create(@Valid @ModelAttribute BusDeleteForm busDeleteForm, Errors errors, RedirectAttributes ra) {
+        if (errors.hasErrors()) {
+            return DELETE;
+        }
+        busService.delete(busDeleteForm.getBus());
         MessageHelper.addSuccessAttribute(ra, CREATE+".success");
         return "redirect:/";
     }

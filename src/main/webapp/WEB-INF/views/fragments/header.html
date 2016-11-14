@@ -11,14 +11,39 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Demo project</a>
+            <a class="navbar-brand" href="#">Bbus project</a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="#" th:href="@{/}">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li class="dropdown">
+                    <a href="#bus" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Bus <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#createBus">Create</a></li>
+                        <li><a href="#deleteBus">Delete</a></li>
+                        <li><a href="#searchBus">Search</a></li>
+                        <li><a href="#listBus">List</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#box" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Box <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#createBox">Create</a></li>
+                        <li><a href="#deleteBox">Delete</a></li>
+                        <li><a href="#searchBox">Search</a></li>
+                        <li><a href="#listBox">List</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Message <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#emitMessage">Emit</a></li>
+                        <li><a href="#deleteMessage">Delete</a></li>
+                        <li><a href="#listMessage">List</a></li>
+                    </ul>
+                </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li th:if="${#authorization.expression('!isAuthenticated()')}">

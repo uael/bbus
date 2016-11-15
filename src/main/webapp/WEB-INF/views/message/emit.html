@@ -11,21 +11,28 @@
 <body>
 <form class="form-narrow form-horizontal" method="post" th:action="@{/message/emit}" th:object="${messageEmitForm}">
     <!--/* Show general error message when form contains errors */-->
-    <th:block th:if="${#fields.hasErrors('${busCreateForm.*}')}">
+    <th:block th:if="${#fields.hasErrors('${messageCreateForm.*}')}">
         <div th:replace="fragments/alert :: alert (type='danger', message='Form contains errors. Please try again.')">Alert</div>
     </th:block>
     <fieldset>
         <legend>Emit a new message</legend>
         <div class="form-group" th:classappend="${#fields.hasErrors('name')}? 'has-error'">
-            <label for="name" class="col-lg-2 control-label">Box Name</label>
+            <label for="nameBus" class="col-lg-2 control-label">Box Name</label>
             <div class="col-lg-10">
-                <input type="text" class="form-control" id="name" placeholder="Bus name" th:field="*{name}" />
+                <input type="text" class="form-control" id="nameBus" placeholder="Box name" required="required" th:field="*{name}" />
+                <span class="help-block" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Incorrect name</span>
+            </div>
+        </div>
+        <div class="form-group" th:classappend="${#fields.hasErrors('name')}? 'has-error'">
+            <label for="nameBox" class="col-lg-2 control-label">Box Name</label>
+            <div class="col-lg-10">
+                <input type="text" class="form-control" id="nameBox" placeholder="Box name" th:field="*{name}" />
                 <span class="help-block" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Incorrect name</span>
             </div>
         </div>
         <div class="form-group">
             <label for="inputMessage">Message:</label>
-            <textarea class="form-control" rows="5" id="inputMessage"></textarea>
+            <textarea class="form-control" rows="5" id="inputMessage" required="required"></textarea>
         </div>
         <div class="form-group">
             <div class="col-lg-offset-2 col-lg-10">

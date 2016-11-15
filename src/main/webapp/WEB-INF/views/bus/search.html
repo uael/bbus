@@ -17,7 +17,7 @@
     <fieldset>
         <legend>List bus</legend>
         <div class="form-group" th:classappend="${#fields.hasErrors('name')}? 'has-error'">
-            <label for="name" class="col-lg-2 control-label">Name</label>
+            <label for="name" class="col-lg-2 control-label">Search </label>
             <div class="col-lg-10">
                 <input type="text" class="form-control" id="name" placeholder="Bus name" th:field="*{name}" />
                 <span class="help-block" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Incorrect name</span>

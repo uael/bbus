@@ -11,15 +11,15 @@
 <body>
 <form class="form-narrow form-horizontal" method="post" th:action="@{/message/delete}" th:object="${messageDeleteForm}">
     <!--/* Show general error message when form contains errors */-->
-    <th:block th:if="${#fields.hasErrors('${busCreateForm.*}')}">
+    <th:block th:if="${#fields.hasErrors('${messageCreateForm.*}')}">
         <div th:replace="fragments/alert :: alert (type='danger', message='Form contains errors. Please try again.')">Alert</div>
     </th:block>
     <fieldset>
         <legend>Delete Message</legend>
         <div class="form-group" th:classappend="${#fields.hasErrors('name')}? 'has-error'">
-            <label for="name" class="col-lg-2 control-label">Name</label>
+            <label for="messageDelete" class="col-lg-2 control-label">Name</label>
             <div class="col-lg-10">
-                <input type="text" class="form-control" id="name" placeholder="Bus name" th:field="*{name}" />
+                <input type="text" class="form-control" id="messageDelete" placeholder="Message delete" th:field="*{name}" />
                 <span class="help-block" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Incorrect name</span>
             </div>
         </div>

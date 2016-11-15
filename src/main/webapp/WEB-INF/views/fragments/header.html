@@ -21,27 +21,27 @@
                 <li class="dropdown">
                     <a href="#bus" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Bus <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#createBus">Create</a></li>
-                        <li><a href="#deleteBus">Delete</a></li>
-                        <li><a href="#searchBus">Search</a></li>
-                        <li><a href="#listBus">List</a></li>
+                        <li><a th:href="@{/bus/create}">Create</a></li>
+                        <li><a th:href="@{/bus/delete}">Delete</a></li>
+                        <li><a th:href="@{/bus/search}">Search</a></li>
+                        <li><a th:href="@{/bus/list}">List</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
                     <a href="#box" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Box <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#createBox">Create</a></li>
-                        <li><a href="#deleteBox">Delete</a></li>
-                        <li><a href="#searchBox">Search</a></li>
-                        <li><a href="#listBox">List</a></li>
+                        <li><a th:href="@{/box/create}">Create</a></li>
+                        <li><a th:href="@{/box/delete}">Delete</a></li>
+                        <li><a th:href="@{/box/search}">Search</a></li>
+                        <li><a th:href="@{/box/list}">List</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Message <span class="caret"></span></a>
+                    <a href="#message" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Message <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#emitMessage">Emit</a></li>
-                        <li><a href="#deleteMessage">Delete</a></li>
-                        <li><a href="#listMessage">List</a></li>
+                        <li><a th:href="@{/message/emit}">Emit</a></li>
+                        <li><a th:href="@{/message/delete}">Delete</a></li>
+                        <li><a th:href="@{/message/list}">List</a></li>
                     </ul>
                 </li>
             </ul>

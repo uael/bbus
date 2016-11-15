@@ -7,12 +7,15 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import unice.s3a.account.Account;
+import unice.s3a.account.AccountRepository;
 import unice.s3a.bus.Bus;
 import unice.s3a.bus.BusRepository;
 import unice.s3a.bus.BusService;
 import unice.s3a.support.web.MessageHelper;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +30,8 @@ class BoxController {
     private final BoxService boxService;
     private final BusRepository busRepository;
     private final BusService busService;
+    @Autowired
+    private AccountRepository accountRepository;
 
     /**
      * Instantiates a new Box controller.
@@ -42,6 +47,16 @@ class BoxController {
         this.boxService = boxService;
         this.boxRepository = boxRepository;
         this.busService = busService;
+    }
+
+    /**
+     * Populate buses list.
+     * @param principal the principal
+     * @return the list
+     */
+    @ModelAttribute("account")
+    public Account account(Principal principal) {
+        return principal != null ? accountRepository.findOneByEmail(principal.getName()) : null;
     }
 
     /**
@@ -68,8 +83,8 @@ class BoxController {
             return CREATE;
         }
         busService.addBox(boxCreateForm.getBus().getName(), boxService.save(new Box(boxCreateForm.getName())));
-        MessageHelper.addSuccessAttribute(ra, CREATE+".success");
-        return "redirect:"+CREATE;
+        MessageHelper.addSuccessAttribute(ra, CREATE+".success", boxCreateForm.getName());
+        return "redirect:/"+CREATE;
     }
 
     /**
@@ -85,8 +100,8 @@ class BoxController {
             return DELETE;
         }
         boxRepository.delete(boxDeleteForm.getBox());
-        MessageHelper.addSuccessAttribute(ra, CREATE+".success");
-        return "redirect:"+DELETE;
+        MessageHelper.addSuccessAttribute(ra, CREATE+".success", boxDeleteForm.getBox().getName());
+        return "redirect:/"+DELETE;
     }
 
     /**

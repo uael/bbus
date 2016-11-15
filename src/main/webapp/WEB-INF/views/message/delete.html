@@ -18,10 +18,24 @@
     </th:block>
     <form class="form-narrow form-horizontal" method="post" th:action="@{/message/delete}"
           th:object="${messageDeleteForm}">
-        <!--/* Show general error message when form contains errors */-->
-        <th:block th:if="${#fields.hasErrors('${messageCreateForm.*}')}">
-            <div th:replace="fragments/alert :: alert (type='danger', message='Form contains errors. Please try again.')">
-                Alert
+        <th:block th:if="${message != null}">
+            <div th:switch="${#lists.size(message.args)}" th:remove="tag">
+            <span th:case="0" th:remove="tag">
+                <span th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(message.type)},
+                    message=#{message.message})">&nbsp;</span>
+            </span>
+                <span th:case="1" th:remove="tag">
+                <span th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(message.type)},
+                    message=#{${message.message}(${message.args[0]})})">&nbsp;</span>
+            </span>
+                <span th:case="2" th:remove="tag">
+                <span th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(message.type)},
+                    message=#{${message.message}(${message.args[0]}, ${message.args[1]})})">&nbsp;</span>
+            </span>
+                <span th:case="3" th:remove="tag">
+                <span th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(message.type)},
+                    message=#{${message.message}(${message.args[0]}, ${message.args[1]}, ${message.args[2]})})">&nbsp;</span>
+            </span>
             </div>
         </th:block>
         <fieldset>
@@ -47,6 +61,7 @@
             </div>
         </fieldset>
     </form>
+    <div th:replace="fragments/footer :: footer">&copy; 2013 The Static Templates</div>
 </div>
 </body>
 </html>

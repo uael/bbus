@@ -10,9 +10,8 @@
 </head>
 <body>
 <form class="form-narrow form-horizontal" method="post" th:action="@{/signup}" th:object="${signupForm}">
-    <!--/* Show general error message when form contains errors */-->
     <th:block th:if="${#fields.hasErrors('${signupForm.*}')}">
-        <div th:replace="fragments/alert :: alert (type='danger', message='Form contains errors. Please try again.')">Alert</div>
+        <div th:replace="fragments/alert :: alert (type='danger', message='Sign up errors. Please try again.')">Alert</div>
     </th:block>
     <fieldset>
         <legend>Please Sign Up</legend>
@@ -21,6 +20,17 @@
             <div class="col-lg-10">
                 <input type="text" class="form-control" id="email" placeholder="Email address" th:field="*{email}" />
                 <span class="help-block" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Incorrect email</span>
+            </div>
+        </div>
+        <div class="form-group" th:classappend="${#fields.hasErrors('role')}? 'has-error'">
+            <label for="role" class="col-lg-2 control-label">Password</label>
+            <div class="col-lg-10">
+                <select th:field="*{role}" id="role" class="form-control">
+                    <option value="ROLE_USER">User</option>
+                    <option value="ROLE_AGENT">Agent</option>
+                    <option value="ROLE_PRODUCER">Producer</option>
+                </select>
+                <span class="help-block" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Incorrect password</span>
             </div>
         </div>
         <div class="form-group" th:classappend="${#fields.hasErrors('password')}? 'has-error'">

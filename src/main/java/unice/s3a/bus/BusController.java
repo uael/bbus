@@ -8,9 +8,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import unice.s3a.account.Account;
+import unice.s3a.account.AccountRepository;
 import unice.s3a.support.web.MessageHelper;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,10 +25,12 @@ class BusController {
     private static final String CREATE = "bus/create";
     private static final String DELETE = "bus/delete";
     private final BusService busService;
+    @Autowired
+    private AccountRepository accountRepository;
 
     /**
      * Instantiates a new Bus controller.
-     * @param busService    the bus service
+     * @param busService the bus service
      */
     @Autowired
     public BusController(final BusService busService) {
@@ -33,14 +38,13 @@ class BusController {
     }
 
     /**
-     * Create string.
-     * @param model the model
-     * @return the string
+     * Populate buses list.
+     * @param principal the principal
+     * @return the list
      */
-    @RequestMapping(value = CREATE)
-    public String create(Model model) {
-        model.addAttribute(new BusCreateForm());
-        return CREATE;
+    @ModelAttribute("account")
+    public Account account(Principal principal) {
+        return principal != null ? accountRepository.findOneByEmail(principal.getName()) : null;
     }
 
     /**
@@ -56,8 +60,30 @@ class BusController {
             return CREATE;
         }
         busService.save(busCreateForm.createBus());
-        MessageHelper.addSuccessAttribute(ra, CREATE+".success");
-        return "redirect:"+CREATE;
+        MessageHelper.addSuccessAttribute(ra, CREATE+".success", busCreateForm.getName());
+        return "redirect:/"+CREATE;
+    }
+
+    /**
+     * Create string.
+     * @param model the model
+     * @return the string
+     */
+    @RequestMapping(value = CREATE)
+    public String create(Model model) {
+        model.addAttribute(new BusCreateForm());
+        return CREATE;
+    }
+
+    /**
+     * Delete string.
+     * @param model the model
+     * @return the string
+     */
+    @RequestMapping(value = DELETE)
+    public String delete(Model model) {
+        model.addAttribute(new BusDeleteForm());
+        return DELETE;
     }
 
     /**
@@ -73,19 +99,8 @@ class BusController {
             return DELETE;
         }
         busService.delete(busDeleteForm.getBus());
-        MessageHelper.addSuccessAttribute(ra, CREATE+".success");
-        return "redirect:"+DELETE;
-    }
-
-    /**
-     * Delete string.
-     * @param model the model
-     * @return the string
-     */
-    @RequestMapping(value = DELETE)
-    public String delete(Model model) {
-        model.addAttribute(new BusDeleteForm());
-        return DELETE;
+        MessageHelper.addSuccessAttribute(ra, DELETE+".success", busDeleteForm.getBus().getName());
+        return "redirect:/"+DELETE;
     }
 
     /**

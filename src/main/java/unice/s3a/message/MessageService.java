@@ -6,21 +6,12 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
-
-
 @Service
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class MessageService {
 
     @Autowired
     private MessageRepository messageRepository;
-
-    @PostConstruct
-    protected void initialize() {
-        save(new Message("Nouveau rond point"));
-        save(new Message("Embouteillage"));
-    }
 
     @Transactional
     public Message save(Message message) {

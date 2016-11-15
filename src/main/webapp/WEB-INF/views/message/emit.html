@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Create</title>
+    <title>Message - Emit</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen"
           th:href="@{/resources/css/bootstrap.min.css}"/>
@@ -34,45 +34,80 @@
     </th:block>
     <form class="form-narrow form-horizontal" method="post" th:action="@{/message/emit}" th:object="${messageEmitForm}">
         <!--/* Show general error message when form contains errors */-->
-        <th:block th:if="${#fields.hasErrors('${messageCreateForm.*}')}">
+        <th:block th:if="${#fields.hasErrors('${messageEmitForm.*}')}">
             <div th:replace="fragments/alert :: alert (type='danger', message='Form contains errors. Please try again.')">
                 Alert
             </div>
         </th:block>
         <fieldset>
-            <legend>Emit a new message</legend>
-            <div class="form-group" th:classappend="${#fields.hasErrors('name')}? 'has-error'">
-                <label for="nameBus" class="col-lg-2 control-label">Box Name</label>
+            <legend>Emit message to a bus</legend>
+            <div class="form-group" th:classappend="${#fields.hasErrors('bus')}? 'has-error'">
+                <label for="bus" class="col-lg-2 control-label">Bus</label>
                 <div class="col-lg-10">
-                    <input type="text" class="form-control" id="nameBus" placeholder="Box name" required="required"
-                           th:field="*{name}"/>
-                    <span class="help-block" th:if="${#fields.hasErrors('name')}"
-                          th:errors="*{name}">Incorrect name</span>
+                    <select th:field="*{bus}" id="bus" class="form-control">
+                        <option th:each="item : ${buses}" th:value="${item.name}" th:text="${item.name}">Wireframe
+                        </option>
+                    </select>
+                    <span class="help-block" th:if="${#fields.hasErrors('bus')}" th:errors="*{bus}">Incorrect bus</span>
                 </div>
             </div>
-            <div class="form-group" th:classappend="${#fields.hasErrors('name')}? 'has-error'">
-                <label for="nameBox" class="col-lg-2 control-label">Box Name</label>
+            <div class="form-group" th:classappend="${#fields.hasErrors('box')}? 'has-error'">
+                <label for="box" class="col-lg-2 control-label">Box</label>
                 <div class="col-lg-10">
-                    <input type="text" class="form-control" id="nameBox" placeholder="Box name" th:field="*{name}"/>
-                    <span class="help-block" th:if="${#fields.hasErrors('name')}"
-                          th:errors="*{name}">Incorrect name</span>
+                    <select th:field="*{box}" id="box" class="form-control">
+                        <option value="">Select a box</option>
+                    </select>
+                    <span class="help-block" th:if="${#fields.hasErrors('box')}" th:errors="*{box}">Incorrect box</span>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="inputMessage">Message:</label>
-                <textarea class="form-control" rows="5" id="inputMessage" required="required"></textarea>
+            <div class="form-group" th:classappend="${#fields.hasErrors('date')}? 'has-error'">
+                <label for="date" class="col-lg-2 control-label">Expiration date</label>
+                <div class="col-lg-10">
+                    <input type="text" class="form-control" id="date" placeholder="dd-MM-YYYY" th:field="*{date}" />
+                    <span class="help-block" th:if="${#fields.hasErrors('date')}" th:errors="*{date}">Incorrect date</span>
+                </div>
+            </div>
+            <div class="form-group" th:classappend="${#fields.hasErrors('content')}? 'has-error'">
+                <label for="content">Message</label>
+                <div class="col-lg-10">
+                    <textarea th:field="*{content}" class="form-control" rows="5" id="content" required="required">
+                    </textarea>
+                    <span class="help-block" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">Incorrect content</span>
+                </div>
             </div>
             <div class="form-group">
                 <div class="col-lg-offset-2 col-lg-10">
-                    <button type="submit" class="btn btn-default">Save</button>
+                    <button type="submit" class="btn btn-default">Emit</button>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-lg-offset-2 col-lg-10">
-                    <a href="/" th:href="@{/}">Cancel</a>
+                    <a href="/" th:href="@{/}">Go back</a>
                 </div>
             </div>
         </fieldset>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#bus').change(function () {
+                    $.getJSON('/boxes', {
+                        busName: $(this).val(),
+                        ajax: 'true'
+                    }, function (data) {
+                        var html = '<option value="">Select a box</option>';
+                        var len = data.length;
+                        for (var i = 0; i < len; i++) {
+                            html += '<option value="' + data[i].name + '">'
+                                + data[i].name + '</option>';
+                        }
+                        html += '</option>';
+                        $('#box').html(html);
+                    });
+                }).trigger('change', {
+                    busName: $(this).val(),
+                    ajax: 'true'
+                })
+            });
+        </script>
     </form>
     <div th:replace="fragments/footer :: footer">&copy; 2013 The Static Templates</div>
 </div>

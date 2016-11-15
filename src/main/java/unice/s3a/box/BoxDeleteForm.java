@@ -1,23 +1,22 @@
 package unice.s3a.box;
 
-import org.hibernate.validator.constraints.NotBlank;
 import unice.s3a.bus.Bus;
 
 import javax.validation.constraints.NotNull;
 
-public class BoxCreateForm {
+public class BoxDeleteForm {
 
 	private static final String NOT_BLANK_MESSAGE = "{notBlank.message}";
 
-    @NotBlank(message = NOT_BLANK_MESSAGE)
-	private String name;
+    @NotNull(message = NOT_BLANK_MESSAGE)
+	private Box box;
 
-    public String getName() {
-		return name;
+    public Box getBox() {
+		return box;
 	}
 
-	public void setName(final String name) {
-		this.name = name;
+	public void setBox(final Box box) {
+		this.box = box;
 	}
 
 	@NotNull(message = NOT_BLANK_MESSAGE)
@@ -29,9 +28,5 @@ public class BoxCreateForm {
 
 	public void setBus(final Bus bus) {
 		this.bus = bus;
-	}
-
-	public Box createBox() {
-        return this.getBus().addBox(this.getName());
 	}
 }

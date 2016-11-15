@@ -1,7 +1,7 @@
 package unice.s3a.box;
 
-/**
- * Created by scher on 14/11/2016.
- */
-public interface BoxRepository {
-}
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface BoxRepository extends JpaRepository<Box, String> { }

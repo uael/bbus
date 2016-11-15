@@ -14,21 +14,42 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Bus controller.
+ */
 @Controller
 class BusController {
+    private static final String CREATE = "bus/create";
+    private static final String DELETE = "bus/delete";
+    private final BusService busService;
 
-    static final String CREATE = "bus/create";
-    static final String DELETE = "bus/delete";
-
+    /**
+     * Instantiates a new Bus controller.
+     * @param busService    the bus service
+     */
     @Autowired
-    private BusService busService;
+    public BusController(final BusService busService) {
+        this.busService = busService;
+    }
 
+    /**
+     * Create string.
+     * @param model the model
+     * @return the string
+     */
     @RequestMapping(value = CREATE)
     public String create(Model model) {
         model.addAttribute(new BusCreateForm());
         return CREATE;
     }
 
+    /**
+     * Create string.
+     * @param busCreateForm the bus create form
+     * @param errors        the errors
+     * @param ra            the ra
+     * @return the string
+     */
     @RequestMapping(value = CREATE, method = RequestMethod.POST)
     public String create(@Valid @ModelAttribute BusCreateForm busCreateForm, Errors errors, RedirectAttributes ra) {
         if (errors.hasErrors()) {
@@ -36,27 +57,43 @@ class BusController {
         }
         busService.save(busCreateForm.createBus());
         MessageHelper.addSuccessAttribute(ra, CREATE+".success");
-        return "redirect:/";
+        return CREATE;
     }
 
-    @ModelAttribute("buses")
-    public List<Bus> populateBuses() {
-        return new ArrayList<>(busService.findAll().values());
+    /**
+     * Create string.
+     * @param busDeleteForm the bus delete form
+     * @param errors        the errors
+     * @param ra            the ra
+     * @return the string
+     */
+    @RequestMapping(value = DELETE, method = RequestMethod.POST)
+    public String delete(@Valid @ModelAttribute BusDeleteForm busDeleteForm, Errors errors, RedirectAttributes ra) {
+        if (errors.hasErrors()) {
+            return DELETE;
+        }
+        busService.delete(busDeleteForm.getBus());
+        MessageHelper.addSuccessAttribute(ra, CREATE+".success");
+        return DELETE;
     }
 
+    /**
+     * Delete string.
+     * @param model the model
+     * @return the string
+     */
     @RequestMapping(value = DELETE)
     public String delete(Model model) {
         model.addAttribute(new BusDeleteForm());
         return DELETE;
     }
 
-    @RequestMapping(value = DELETE, method = RequestMethod.POST)
-    public String create(@Valid @ModelAttribute BusDeleteForm busDeleteForm, Errors errors, RedirectAttributes ra) {
-        if (errors.hasErrors()) {
-            return DELETE;
-        }
-        busService.delete(busDeleteForm.getBus());
-        MessageHelper.addSuccessAttribute(ra, CREATE+".success");
-        return "redirect:/";
+    /**
+     * Populate buses list.
+     * @return the list
+     */
+    @ModelAttribute("buses")
+    public List<Bus> populateBuses() {
+        return new ArrayList<>(busService.findAll().values());
     }
 }

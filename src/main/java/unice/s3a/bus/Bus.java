@@ -2,33 +2,36 @@ package unice.s3a.bus;
 
 import unice.s3a.account.Account;
 import unice.s3a.box.Box;
-import unice.s3a.box.BoxMap;
 import unice.s3a.message.Message;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import javax.persistence.*;
+import java.util.*;
 
+/**
+ * The type Bus.
+ */
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "bus")
+@Table(name = "BUS")
 public class Bus implements java.io.Serializable {
     @Id
     private String name;
-    private ArrayList<String> subscribers;
-    private BoxMap boxMap;
+    @ElementCollection(targetClass = Account.class, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "SUBSCRIBERS", joinColumns = @JoinColumn(name = "BUS_ID"), inverseJoinColumns = @JoinColumn
+        (name = "ACCOUNT_ID"))
+    private List<Account> subscribers = new ArrayList<>();
+    @ElementCollection(targetClass = Box.class, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "BOXES", joinColumns = @JoinColumn(name = "BUS_ID"), inverseJoinColumns = @JoinColumn(name =
+        "BOX_ID"))
+    @MapKey(name = "name")
+    private Map<String, Box> boxMap = new HashMap<>();
 
     /**
      * Instantiates a new Bus.
      */
-    public Bus() {
-        this.subscribers = new ArrayList<>();
-        this.boxMap = new BoxMap();
-    }
+    public Bus() { }
 
     /**
      * Instantiates a new unice.s3a.bus.Bus.
@@ -40,12 +43,23 @@ public class Bus implements java.io.Serializable {
     }
 
     /**
+     * Add box box.
+     * @param name the name
+     * @return the box
+     */
+    public Box addBox(String name) {
+        Box box = new Box(name);
+        this.boxMap.put(name, box);
+        return box;
+    }
+
+    /**
      * Emit boolean.
      * @param message the message
      * @return the boolean
      */
     public boolean emit(final String message) {
-        return this.boxMap.getOrAdd("Default").emit(message);
+        return this.boxMap.get("Default").emit(message);
     }
 
     /**
@@ -55,7 +69,7 @@ public class Bus implements java.io.Serializable {
      * @return the boolean
      */
     public boolean emit(final String message, final Date expirationDate) {
-        return this.boxMap.getOrAdd("Default").emit(message, expirationDate);
+        return this.boxMap.get("Default").emit(message, expirationDate);
     }
 
     /**
@@ -65,7 +79,7 @@ public class Bus implements java.io.Serializable {
      * @return the boolean
      */
     public boolean emit(Account producer, String content) {
-        return this.boxMap.getOrAdd("Default").emit(producer, content);
+        return this.boxMap.get("Default").emit(producer, content);
     }
 
     /**
@@ -76,7 +90,7 @@ public class Bus implements java.io.Serializable {
      * @return the boolean
      */
     public boolean emit(Account producer, String content, final Date expirationDate) {
-        return this.boxMap.getOrAdd("Default").emit(producer, content, expirationDate);
+        return this.boxMap.get("Default").emit(producer, content, expirationDate);
     }
 
     /**
@@ -86,7 +100,7 @@ public class Bus implements java.io.Serializable {
      * @return the boolean
      */
     public boolean emitAt(final String boxName, final String message) {
-        return this.boxMap.getOrAdd(boxName).emit(message);
+        return this.boxMap.get(boxName).emit(message);
     }
 
     /**
@@ -97,7 +111,7 @@ public class Bus implements java.io.Serializable {
      * @return the boolean
      */
     public boolean emitAt(final String boxName, final String message, final Date expirationDate) {
-        return this.boxMap.getOrAdd(boxName).emit(message, expirationDate);
+        return this.boxMap.get(boxName).emit(message, expirationDate);
     }
 
     /**
@@ -108,7 +122,7 @@ public class Bus implements java.io.Serializable {
      * @return the boolean
      */
     public boolean emitAt(final String boxName, Account producer, String content) {
-        return this.boxMap.getOrAdd(boxName).emit(producer, content);
+        return this.boxMap.get(boxName).emit(producer, content);
     }
 
     /**
@@ -120,15 +134,23 @@ public class Bus implements java.io.Serializable {
      * @return the boolean
      */
     public boolean emitAt(final String boxName, Account producer, String content, final Date expirationDate) {
-        return this.boxMap.getOrAdd(boxName).emit(producer, content, expirationDate);
+        return this.boxMap.get(boxName).emit(producer, content, expirationDate);
     }
 
     /**
      * Gets box map.
      * @return the box map
      */
-    public BoxMap getBoxMap() {
+    public Map<String, Box> getBoxMap() {
         return boxMap;
+    }
+
+    /**
+     * Sets box map.
+     * @param boxMap the box map
+     */
+    public void setBoxMap(final Map<String, Box> boxMap) {
+        this.boxMap = boxMap;
     }
 
     /**
@@ -136,7 +158,7 @@ public class Bus implements java.io.Serializable {
      * @return the all messages
      */
     public List<Message> getBoxMessages() {
-        return this.boxMap.get("Default");
+        return this.boxMap.get("Default").getMessages();
     }
 
     /**
@@ -149,19 +171,19 @@ public class Bus implements java.io.Serializable {
             throw new IllegalArgumentException("Box "+boxName+" does not exists.");
         }
         List<Message> result = new ArrayList<>();
-        result.addAll(this.boxMap.get(boxName));
+        result.addAll(this.boxMap.get(boxName).getMessages());
         if (!Objects.equals(boxName, "Default")) {
-            result.addAll(this.boxMap.get("Default"));
+            result.addAll(this.boxMap.get("Default").getMessages());
         }
         return result;
     }
 
     /**
-     * Gets subscribers.
-     * @return the subscribers
+     * Gets boxes.
+     * @return the boxes
      */
-    public ArrayList<String> getSubscribers() {
-        return subscribers;
+    public List<Box> getBoxes() {
+        return new ArrayList<>(this.boxMap.values());
     }
 
     /**
@@ -171,7 +193,7 @@ public class Bus implements java.io.Serializable {
     public List<Message> getMessages() {
         List<Message> result = new ArrayList<>();
         for (Box box : this.boxMap.values()) {
-            result.addAll(box);
+            result.addAll(box.getMessages());
         }
         return result;
     }
@@ -182,6 +204,30 @@ public class Bus implements java.io.Serializable {
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * Sets name.
+     * @param name the name
+     */
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    /**
+     * Gets subscribers.
+     * @return the subscribers
+     */
+    public List<Account> getSubscribers() {
+        return subscribers;
+    }
+
+    /**
+     * Sets subscribers.
+     * @param subscribers the subscribers
+     */
+    public void setSubscribers(final List<Account> subscribers) {
+        this.subscribers = subscribers;
     }
 
     /**

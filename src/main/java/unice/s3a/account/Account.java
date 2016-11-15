@@ -5,65 +5,103 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.time.Instant;
 
+/**
+ * The type Account.
+ */
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "account")
+@Table(name = "ACCOUNT")
 public class Account implements java.io.Serializable {
+    @Id
+    @GeneratedValue
+    private Long id;
+    @Column(unique = true)
+    private String email;
+    @JsonIgnore
+    private String password;
+    private String role = "ROLE_USER";
+    private Instant created;
 
-	@Id
-	@GeneratedValue
-	private Long id;
-
-	@Column(unique = true)
-	private String email;
-	
-	@JsonIgnore
-	private String password;
-
-	private String role = "ROLE_USER";
-
-	private Instant created;
-
+    /**
+     * Instantiates a new Account.
+     */
     protected Account() {
+    }
 
-	}
-	
-	public Account(String email, String password, String role) {
-		this.email = email;
-		this.password = password;
-		this.role = role;
-		this.created = Instant.now();
-	}
+    /**
+     * Instantiates a new Account.
+     * @param email    the email
+     * @param password the password
+     * @param role     the role
+     */
+    public Account(String email, String password, String role) {
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.created = Instant.now();
+    }
 
-	public Long getId() {
-		return id;
-	}
+    /**
+     * Gets created.
+     * @return the created
+     */
+    public Instant getCreated() {
+        return created;
+    }
 
+    /**
+     * Gets email.
+     * @return the email
+     */
     public String getEmail() {
-		return email;
-	}
+        return email;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    /**
+     * Sets email.
+     * @param email the email
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    /**
+     * Gets id.
+     * @return the id
+     */
+    public Long getId() {
+        return id;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    /**
+     * Gets password.
+     * @return the password
+     */
+    public String getPassword() {
+        return password;
+    }
 
-	public String getRole() {
-		return role;
-	}
+    /**
+     * Sets password.
+     * @param password the password
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public void setRole(String role) {
-		this.role = role;
-	}
+    /**
+     * Gets role.
+     * @return the role
+     */
+    public String getRole() {
+        return role;
+    }
 
-	public Instant getCreated() {
-		return created;
-	}
+    /**
+     * Sets role.
+     * @param role the role
+     */
+    public void setRole(String role) {
+        this.role = role;
+    }
 }

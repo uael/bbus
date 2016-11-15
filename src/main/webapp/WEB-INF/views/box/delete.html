@@ -9,9 +9,9 @@
     <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
 </head>
 <body>
-<form class="form-narrow form-horizontal" method="post" th:action="@{/box/create}" th:object="${boxCreateForm}">
+<form class="form-narrow form-horizontal" method="post" th:action="@{/box/delete}" th:object="${boxDeleteForm}">
     <!--/* Show general error message when form contains errors */-->
-    <th:block th:if="${#fields.hasErrors('${boxCreateForm.*}')}">
+    <th:block th:if="${#fields.hasErrors('${boxDeleteForm.*}')}">
         <div th:replace="fragments/alert :: alert (type='danger', message='Form contains errors. Please try again.')">Alert</div>
     </th:block>
     <fieldset>
@@ -25,16 +25,18 @@
                 <span class="help-block" th:if="${#fields.hasErrors('bus')}" th:errors="*{bus}">Incorrect bus</span>
             </div>
         </div>
-        <div class="form-group" th:classappend="${#fields.hasErrors('name')}? 'has-error'">
-            <label for="name" class="col-lg-2 control-label">Name</label>
+        <div class="form-group" th:classappend="${#fields.hasErrors('box')}? 'has-error'">
+            <label for="box" class="col-lg-2 control-label">Box</label>
             <div class="col-lg-10">
-                <input type="text" class="form-control" id="name" placeholder="Bus name" th:field="*{name}" />
-                <span class="help-block" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Incorrect name</span>
+                <select th:field="*{box}" id="box" class="form-control">
+                    <option value="">Select a box</option>
+                </select>
+                <span class="help-block" th:if="${#fields.hasErrors('box')}" th:errors="*{box}">Incorrect box</span>
             </div>
         </div>
         <div class="form-group">
             <div class="col-lg-offset-2 col-lg-10">
-                <button type="submit" class="btn btn-default">Create</button>
+                <button type="submit" class="btn btn-default">Delete</button>
             </div>
         </div>
         <div class="form-group">
@@ -44,5 +46,27 @@
         </div>
     </fieldset>
 </form>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#bus').change(function() {
+            $.getJSON('/boxes', {
+                busName : $(this).val(),
+                ajax : 'true'
+            }, function(data) {
+                var html = '<option value="">Select a box</option>';
+                var len = data.length;
+                for ( var i = 0; i < len; i++) {
+                    html += '<option value="' + data[i].name + '">'
+                        + data[i].name + '</option>';
+                }
+                html += '</option>';
+                $('#box').html(html);
+            });
+        }).trigger('change', {
+            busName : $(this).val(),
+            ajax : 'true'
+        })
+    });
+</script>
 </body>
 </html>

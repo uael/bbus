@@ -6,30 +6,28 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import unice.s3a.account.Account;
+import unice.s3a.box.Box;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 
+/**
+ * The type Bus service.
+ */
 @Service
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class BusService {
-
     @Autowired
     private BusRepository busRepository;
 
-    @PostConstruct
-    protected void initialize() {
-        save(new Bus("Nice"));
-        save(new Bus("Nice Circulation"));
-    }
-
-    @Transactional
-    public Bus save(Bus bus) {
-        busRepository.save(bus);
-        return bus;
-    }
-
+    /**
+     * Delete bus.
+     * @param bus the bus
+     * @return the bus
+     */
     @Transactional
     public Bus delete(Bus bus) {
         busRepository.delete(bus);
@@ -129,12 +127,49 @@ public class BusService {
         return busRepository.findOne(busName).emitAt(boxName, producer, content, expirationDate);
     }
 
+    /**
+     * Find all linked hash map.
+     * @return the linked hash map
+     */
+    @Transactional
     public LinkedHashMap<String, Bus> findAll() {
         LinkedHashMap<String, Bus> map = new LinkedHashMap<>();
         for (Bus b : busRepository.findAll()) {
             map.put(b.getName(), b);
         }
-
         return map;
+    }
+
+    /**
+     * Initialize.
+     */
+    @PostConstruct
+    protected void initialize() {
+        save(new Bus("Nice"));
+        save(new Bus("Nice Circulation"));
+    }
+
+    /**
+     * Save bus.
+     * @param bus the bus
+     * @return the bus
+     */
+    @Transactional
+    public Bus save(Bus bus) {
+        busRepository.save(bus);
+        return bus;
+    }
+
+    @Transactional
+    public List<Box> getBusBoxes(String name) {
+        return new ArrayList<>(busRepository.findOne(name).getBoxMap().values());
+    }
+
+    @Transactional
+    public Box addBox(String busName, Box b) {
+        Bus bus = busRepository.findOne(busName);
+        bus.getBoxMap().put(b.getName(), b);
+        busRepository.save(bus);
+        return b;
     }
 }

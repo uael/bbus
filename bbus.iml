@@ -111,6 +111,7 @@
     <orderEntry type="library" name="org.thymeleaf:thymeleaf:Release" level="project" />
     <orderEntry type="library" name="org.thymeleaf.extras:thymeleaf-extras-springsecurity4:Release" level="project" />
     <orderEntry type="library" name="org.thymeleaf:thymeleaf-spring4:Release" level="project" />
+    <orderEntry type="library" name="jquery-latest" level="application" />
   </component>
   <component name="POM File Configuration" pomFile="" />
 </module>

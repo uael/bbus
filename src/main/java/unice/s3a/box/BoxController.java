@@ -69,7 +69,7 @@ class BoxController {
         }
         busService.addBox(boxCreateForm.getBus().getName(), boxService.save(new Box(boxCreateForm.getName())));
         MessageHelper.addSuccessAttribute(ra, CREATE+".success");
-        return CREATE;
+        return "redirect:"+CREATE;
     }
 
     /**
@@ -86,7 +86,7 @@ class BoxController {
         }
         boxRepository.delete(boxDeleteForm.getBox());
         MessageHelper.addSuccessAttribute(ra, CREATE+".success");
-        return DELETE;
+        return "redirect:"+DELETE;
     }
 
     /**

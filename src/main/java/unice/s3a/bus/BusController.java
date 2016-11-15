@@ -57,7 +57,7 @@ class BusController {
         }
         busService.save(busCreateForm.createBus());
         MessageHelper.addSuccessAttribute(ra, CREATE+".success");
-        return CREATE;
+        return "redirect:"+CREATE;
     }
 
     /**
@@ -74,7 +74,7 @@ class BusController {
         }
         busService.delete(busDeleteForm.getBus());
         MessageHelper.addSuccessAttribute(ra, CREATE+".success");
-        return DELETE;
+        return "redirect:"+DELETE;
     }
 
     /**

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Create</title>
+    <title>Bus - Create</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen"
           th:href="@{/resources/css/bootstrap.min.css}"/>
@@ -40,7 +40,7 @@
             </div>
         </th:block>
         <fieldset>
-            <legend>Create a new bus</legend>
+            <legend>Create new bus</legend>
             <div class="form-group" th:classappend="${#fields.hasErrors('name')}? 'has-error'">
                 <label for="name" class="col-lg-2 control-label">Name</label>
                 <div class="col-lg-10">
@@ -56,7 +56,7 @@
             </div>
             <div class="form-group">
                 <div class="col-lg-offset-2 col-lg-10">
-                    <a href="/" th:href="@{/}">Cancel</a>
+                    <a href="/" th:href="@{/}">Go back</a>
                 </div>
             </div>
         </fieldset>

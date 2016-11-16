@@ -26,6 +26,7 @@ import java.util.List;
 class BoxController {
     private static final String CREATE = "box/create";
     private static final String DELETE = "box/delete";
+    private static final String LIST = "box/list";
     private final BoxRepository boxRepository;
     private final BoxService boxService;
     private final BusRepository busRepository;
@@ -85,6 +86,11 @@ class BoxController {
         busService.addBox(boxCreateForm.getBus().getName(), boxService.save(new Box(boxCreateForm.getName())));
         MessageHelper.addSuccessAttribute(ra, CREATE+".success", boxCreateForm.getName());
         return "redirect:/"+CREATE;
+    }
+
+    @RequestMapping(value = LIST)
+    public String list(Model model) {
+        return LIST;
     }
 
     /**

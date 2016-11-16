@@ -24,6 +24,7 @@ import java.util.List;
 class BusController {
     private static final String CREATE = "bus/create";
     private static final String DELETE = "bus/delete";
+    private static final String LIST = "bus/list";
     private final BusService busService;
     @Autowired
     private AccountRepository accountRepository;
@@ -84,6 +85,11 @@ class BusController {
     public String delete(Model model) {
         model.addAttribute(new BusDeleteForm());
         return DELETE;
+    }
+
+    @RequestMapping(value = LIST)
+    public String list(Model model) {
+        return LIST;
     }
 
     /**

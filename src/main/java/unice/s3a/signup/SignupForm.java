@@ -4,6 +4,8 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import unice.s3a.account.Account;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * The type Signup form.
  */
@@ -16,6 +18,7 @@ public class SignupForm {
     @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
     private String password;
     @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
+    @NotNull(message = SignupForm.NOT_BLANK_MESSAGE)
     private String role;
 
     /**

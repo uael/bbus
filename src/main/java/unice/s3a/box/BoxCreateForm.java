@@ -5,33 +5,51 @@ import unice.s3a.bus.Bus;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * The type Box create form.
+ */
 public class BoxCreateForm {
+    private static final String NOT_BLANK_MESSAGE = "{notBlank.message}";
+    @NotBlank(message = NOT_BLANK_MESSAGE) private String name;
+    @NotNull(message = NOT_BLANK_MESSAGE) private Bus bus;
 
-	private static final String NOT_BLANK_MESSAGE = "{notBlank.message}";
-
-    @NotBlank(message = NOT_BLANK_MESSAGE)
-	private String name;
-
-    public String getName() {
-		return name;
-	}
-
-	public void setName(final String name) {
-		this.name = name;
-	}
-
-	@NotNull(message = NOT_BLANK_MESSAGE)
-	private Bus bus;
-
-	public Bus getBus() {
-		return bus;
-	}
-
-	public void setBus(final Bus bus) {
-		this.bus = bus;
-	}
-
-	public Box createBox() {
+    /**
+     * Create box box.
+     * @return the box
+     */
+    public Box createBox() {
         return this.getBus().addBox(this.getName());
-	}
+    }
+
+    /**
+     * Gets bus.
+     * @return the bus
+     */
+    public Bus getBus() {
+        return bus;
+    }
+
+    /**
+     * Sets bus.
+     * @param bus the bus
+     */
+    public void setBus(final Bus bus) {
+        this.bus = bus;
+    }
+
+    /**
+     * Gets name.
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Sets name.
+     * @param name the name
+     */
+    public void setName(final String name) {
+        this.name = name;
+    }
 }

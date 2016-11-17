@@ -14,28 +14,40 @@ import unice.s3a.support.web.MessageHelper;
 
 import javax.validation.Valid;
 
+/**
+ * The type Signup controller.
+ */
 @Controller
 public class SignupController {
-
     private static final String SIGNUP_VIEW_NAME = "signup/signup";
+    @Autowired private AccountService accountService;
 
-	@Autowired
-	private AccountService accountService;
-	
-	@RequestMapping(value = "signup")
-	public String signup(Model model) {
-		model.addAttribute(new SignupForm());
+    /**
+     * Signup string.
+     * @param model the model
+     * @return the string
+     */
+    @RequestMapping(value = "signup")
+    public String signup(Model model) {
+        model.addAttribute(new SignupForm());
         return SIGNUP_VIEW_NAME;
-	}
-	
-	@RequestMapping(value = "signup", method = RequestMethod.POST)
-	public String signup(@Valid @ModelAttribute SignupForm signupForm, Errors errors, RedirectAttributes ra) {
-		if (errors.hasErrors()) {
-			return SIGNUP_VIEW_NAME;
-		}
-		Account account = accountService.save(signupForm.createAccount());
-		accountService.signin(account);
+    }
+
+    /**
+     * Signup string.
+     * @param signupForm the signup form
+     * @param errors     the errors
+     * @param ra         the ra
+     * @return the string
+     */
+    @RequestMapping(value = "signup", method = RequestMethod.POST)
+    public String signup(@Valid @ModelAttribute SignupForm signupForm, Errors errors, RedirectAttributes ra) {
+        if (errors.hasErrors()) {
+            return SIGNUP_VIEW_NAME;
+        }
+        Account account = accountService.save(signupForm.createAccount());
+        accountService.signin(account);
         MessageHelper.addSuccessAttribute(ra, "signup.success");
-		return "redirect:/";
-	}
+        return "redirect:/";
+    }
 }

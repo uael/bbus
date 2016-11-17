@@ -1,3 +1,6 @@
 package unice.s3a;
 
-public interface Application {}
+/**
+ * The interface Application.
+ */
+public interface Application { }

@@ -15,15 +15,11 @@ import java.util.List;
 @Entity
 @Table(name = "BOX")
 public class Box implements java.io.Serializable {
-    @Id
-    private String name;
-    @ElementCollection(targetClass=Message.class, fetch = FetchType.EAGER)
+    @Id private String name;
+    @ElementCollection(targetClass = Message.class, fetch = FetchType.EAGER)
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(
-        name = "MESSAGES",
-        joinColumns = @JoinColumn(name = "BOX_ID"),
-        inverseJoinColumns = @JoinColumn(name = "MESSAGE_ID")
-    )
+    @JoinTable(name = "MESSAGES", joinColumns = @JoinColumn(name = "BOX_ID"),
+        inverseJoinColumns = @JoinColumn(name = "MESSAGE_ID"))
     private List<Message> messages = new ArrayList<>();
 
     /**

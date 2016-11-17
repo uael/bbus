@@ -4,18 +4,22 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.ServletRegistration;
 
+/**
+ * The type Web app initializer.
+ */
 public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
-
     @Override
-    protected String[] getServletMappings() {
-        return new String[]{"/"};
+    protected void customizeRegistration(ServletRegistration.Dynamic registration) {
+        registration.setInitParameter("defaultHtmlEscape", "true");
+        registration.setInitParameter("spring.profiles.active", "default");
     }
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class<?>[] {ApplicationConfig.class};
+        return new Class<?>[]{ ApplicationConfig.class };
     }
 
     @Override
@@ -28,15 +32,12 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
         CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
         characterEncodingFilter.setEncoding("UTF-8");
         characterEncodingFilter.setForceEncoding(true);
-
         DelegatingFilterProxy securityFilterChain = new DelegatingFilterProxy("springSecurityFilterChain");
-
-        return new Filter[] {characterEncodingFilter, securityFilterChain};
+        return new Filter[]{ characterEncodingFilter, securityFilterChain };
     }
 
     @Override
-    protected void customizeRegistration(ServletRegistration.Dynamic registration) {
-        registration.setInitParameter("defaultHtmlEscape", "true");
-        registration.setInitParameter("spring.profiles.active", "default");
+    protected String[] getServletMappings() {
+        return new String[]{ "/" };
     }
 }

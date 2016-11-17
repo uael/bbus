@@ -25,10 +25,8 @@ import java.util.Collections;
 @Service
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class AccountService implements UserDetailsService {
-    @Autowired
-    private AccountRepository accountRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    @Autowired private AccountRepository accountRepository;
+    @Autowired private PasswordEncoder passwordEncoder;
 
     private Authentication authenticate(Account account) {
         return new UsernamePasswordAuthenticationToken(createUser(account),

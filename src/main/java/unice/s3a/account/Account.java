@@ -15,10 +15,8 @@ public class Account implements java.io.Serializable {
     @Id
     @GeneratedValue
     private Long id;
-    @Column(unique = true)
-    private String email;
-    @JsonIgnore
-    private String password;
+    @Column(unique = true) private String email;
+    @JsonIgnore private String password;
     private String role = "ROLE_USER";
     private Instant created;
 

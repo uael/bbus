@@ -26,8 +26,7 @@ class BusController {
     private static final String DELETE = "bus/delete";
     private static final String LIST = "bus/list";
     private final BusService busService;
-    @Autowired
-    private AccountRepository accountRepository;
+    @Autowired private AccountRepository accountRepository;
 
     /**
      * Instantiates a new Bus controller.
@@ -87,11 +86,6 @@ class BusController {
         return DELETE;
     }
 
-    @RequestMapping(value = LIST)
-    public String list(Model model) {
-        return LIST;
-    }
-
     /**
      * Create string.
      * @param busDeleteForm the bus delete form
@@ -107,6 +101,16 @@ class BusController {
         busService.delete(busDeleteForm.getBus());
         MessageHelper.addSuccessAttribute(ra, DELETE+".success", busDeleteForm.getBus().getName());
         return "redirect:/"+DELETE;
+    }
+
+    /**
+     * List string.
+     * @param model the model
+     * @return the string
+     */
+    @RequestMapping(value = LIST)
+    public String list(Model model) {
+        return LIST;
     }
 
     /**

@@ -20,8 +20,21 @@ import java.util.List;
 @Service
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class BusService {
-    @Autowired
-    private BusRepository busRepository;
+    @Autowired private BusRepository busRepository;
+
+    /**
+     * Add box box.
+     * @param busName the bus name
+     * @param b       the b
+     * @return the box
+     */
+    @Transactional
+    public Box addBox(String busName, Box b) {
+        Bus bus = busRepository.findOne(busName);
+        bus.getBoxMap().put(b.getName(), b);
+        busRepository.save(bus);
+        return b;
+    }
 
     /**
      * Delete bus.
@@ -141,6 +154,16 @@ public class BusService {
     }
 
     /**
+     * Gets bus boxes.
+     * @param name the name
+     * @return the bus boxes
+     */
+    @Transactional
+    public List<Box> getBusBoxes(String name) {
+        return new ArrayList<>(busRepository.findOne(name).getBoxMap().values());
+    }
+
+    /**
      * Initialize.
      */
     @PostConstruct
@@ -158,18 +181,5 @@ public class BusService {
     public Bus save(Bus bus) {
         busRepository.save(bus);
         return bus;
-    }
-
-    @Transactional
-    public List<Box> getBusBoxes(String name) {
-        return new ArrayList<>(busRepository.findOne(name).getBoxMap().values());
-    }
-
-    @Transactional
-    public Box addBox(String busName, Box b) {
-        Bus bus = busRepository.findOne(busName);
-        bus.getBoxMap().put(b.getName(), b);
-        busRepository.save(bus);
-        return b;
     }
 }

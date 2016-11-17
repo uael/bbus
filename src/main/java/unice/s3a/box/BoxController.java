@@ -31,8 +31,7 @@ class BoxController {
     private final BoxService boxService;
     private final BusRepository busRepository;
     private final BusService busService;
-    @Autowired
-    private AccountRepository accountRepository;
+    @Autowired private AccountRepository accountRepository;
 
     /**
      * Instantiates a new Box controller.
@@ -88,11 +87,6 @@ class BoxController {
         return "redirect:/"+CREATE;
     }
 
-    @RequestMapping(value = LIST)
-    public String list(Model model) {
-        return LIST;
-    }
-
     /**
      * Create string.
      * @param boxDeleteForm the box delete form
@@ -119,6 +113,16 @@ class BoxController {
     public String delete(Model model) {
         model.addAttribute(new BoxDeleteForm());
         return DELETE;
+    }
+
+    /**
+     * List string.
+     * @param model the model
+     * @return the string
+     */
+    @RequestMapping(value = LIST)
+    public String list(Model model) {
+        return LIST;
     }
 
     /**

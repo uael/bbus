@@ -7,8 +7,7 @@ import javax.validation.constraints.NotNull;
  */
 public class BusDeleteForm {
     private static final String NOT_BLANK_MESSAGE = "{notNull.message}";
-    @NotNull(message = NOT_BLANK_MESSAGE)
-    private Bus bus;
+    @NotNull(message = NOT_BLANK_MESSAGE) private Bus bus;
 
     /**
      * Gets bus.

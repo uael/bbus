@@ -15,8 +15,7 @@ public class SignupForm {
     @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
     @Email(message = SignupForm.EMAIL_MESSAGE)
     private String email;
-    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
-    private String password;
+    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE) private String password;
     @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
     @NotNull(message = SignupForm.NOT_BLANK_MESSAGE)
     private String role;

@@ -6,22 +6,33 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * The type Box service.
+ */
 @Service
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class BoxService {
+    @Autowired private BoxRepository busRepository;
 
-    @Autowired
-    private BoxRepository busRepository;
-
-    @Transactional
-    public Box save(Box bus) {
-        busRepository.save(bus);
-        return bus;
-    }
-
+    /**
+     * Delete box.
+     * @param bus the bus
+     * @return the box
+     */
     @Transactional
     public Box delete(Box bus) {
         busRepository.delete(bus);
+        return bus;
+    }
+
+    /**
+     * Save box.
+     * @param bus the bus
+     * @return the box
+     */
+    @Transactional
+    public Box save(Box bus) {
+        busRepository.save(bus);
         return bus;
     }
 }

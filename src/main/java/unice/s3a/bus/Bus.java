@@ -14,17 +14,16 @@ import java.util.*;
 @Entity
 @Table(name = "BUS")
 public class Bus implements java.io.Serializable {
-    @Id
-    private String name;
+    @Id private String name;
     @ElementCollection(targetClass = Account.class, fetch = FetchType.EAGER)
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "SUBSCRIBERS", joinColumns = @JoinColumn(name = "BUS_ID"), inverseJoinColumns = @JoinColumn
-        (name = "ACCOUNT_ID"))
+    @JoinTable(name = "SUBSCRIBERS", joinColumns = @JoinColumn(name = "BUS_ID"),
+        inverseJoinColumns = @JoinColumn(name = "ACCOUNT_ID"))
     private List<Account> subscribers = new ArrayList<>();
     @ElementCollection(targetClass = Box.class, fetch = FetchType.EAGER)
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "BOXES", joinColumns = @JoinColumn(name = "BUS_ID"), inverseJoinColumns = @JoinColumn(name =
-        "BOX_ID"))
+    @JoinTable(name = "BOXES", joinColumns = @JoinColumn(name = "BUS_ID"),
+        inverseJoinColumns = @JoinColumn(name = "BOX_ID"))
     @MapKey(name = "name")
     private Map<String, Box> boxMap = new HashMap<>();
 

@@ -16,22 +16,33 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Message controller.
+ */
 @Controller
 class MessageController {
-
     private static final String EMIT = "message/emit";
+    @Autowired private MessageService messageService;
+    @Autowired private BusService busService;
 
-    @Autowired
-    private MessageService messageService;
-    @Autowired
-    private BusService busService;
-
+    /**
+     * Emit string.
+     * @param model the model
+     * @return the string
+     */
     @RequestMapping(value = EMIT)
     public String emit(Model model) {
         model.addAttribute(new MessageEmitForm());
         return EMIT;
     }
 
+    /**
+     * Emit string.
+     * @param messageEmitForm the message emit form
+     * @param errors          the errors
+     * @param ra              the ra
+     * @return the string
+     */
     @RequestMapping(value = EMIT, method = RequestMethod.POST)
     public String emit(@Valid @ModelAttribute MessageEmitForm messageEmitForm, Errors errors, RedirectAttributes ra) {
         if (errors.hasErrors()) {

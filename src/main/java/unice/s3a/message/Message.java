@@ -15,15 +15,9 @@ public class Message implements java.io.Serializable {
     @Id
     @GeneratedValue
     private Long id;
-
-    @Column(name = "CONTENT")
-    private String content;
-
-    @Column(name = "EXPIRATION_DATE")
-    private Date expirationDate;
-
-    @JoinColumn(name = "ACCOUNT_ID")
-    private Account producer;
+    @Column(name = "CONTENT") private String content;
+    @Column(name = "EXPIRATION_DATE") private Date expirationDate;
+    @JoinColumn(name = "ACCOUNT_ID") private Account producer;
 
     /**
      * Instantiates a new Message.
@@ -50,6 +44,7 @@ public class Message implements java.io.Serializable {
     public Message(final Account producer, final String content) {
         this(producer, content, null);
     }
+
     /**
      * Instantiates a new Message.
      * @param producer       the producer

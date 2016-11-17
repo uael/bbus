@@ -55,7 +55,6 @@
                 <label for="box" class="col-lg-2 control-label">Box</label>
                 <div class="col-lg-10">
                     <select th:field="*{box}" id="box" class="form-control">
-                        <option value="">Select a box</option>
                     </select>
                     <span class="help-block" th:if="${#fields.hasErrors('box')}" th:errors="*{box}">Incorrect box</span>
                 </div>
@@ -79,7 +78,7 @@
                     busName: $(this).val(),
                     ajax: 'true'
                 }, function (data) {
-                    var html = '<option value="">Select a box</option>';
+                    var html = '';
                     var len = data.length;
                     for (var i = 0; i < len; i++) {
                         html += '<option value="' + data[i].name + '">'

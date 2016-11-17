@@ -76,6 +76,18 @@ public class AccountService implements UserDetailsService {
     }
 
     /**
+     * Save account.
+     * @param email    the email
+     * @param password the password
+     * @param role     the role
+     * @return the account
+     */
+    @Transactional
+    public Account save(String email, String password, String role) {
+        return save(new Account(email, password, role));
+    }
+
+    /**
      * Signin.
      * @param account the account
      */

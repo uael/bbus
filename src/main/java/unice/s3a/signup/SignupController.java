@@ -45,7 +45,7 @@ public class SignupController {
         if (errors.hasErrors()) {
             return SIGNUP_VIEW_NAME;
         }
-        Account account = accountService.save(signupForm.createAccount());
+        Account account = accountService.save(signupForm.getEmail(), signupForm.getPassword(), signupForm.getRole());
         accountService.signin(account);
         MessageHelper.addSuccessAttribute(ra, "signup.success");
         return "redirect:/";

@@ -2,7 +2,6 @@ package unice.s3a.signup;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
-import unice.s3a.account.Account;
 
 import javax.validation.constraints.NotNull;
 
@@ -20,14 +19,6 @@ public class SignupForm {
     @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
     @NotNull(message = SignupForm.NOT_BLANK_MESSAGE)
     private String role;
-
-    /**
-     * Create account account.
-     * @return the account
-     */
-    public Account createAccount() {
-        return new Account(getEmail(), getPassword(), getRole());
-    }
 
     /**
      * Gets email.

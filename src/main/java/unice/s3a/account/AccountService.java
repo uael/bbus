@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.security.Principal;
 import java.util.Collections;
 
 /**
@@ -46,6 +47,18 @@ public class AccountService implements UserDetailsService {
     }
 
     /**
+     * Current account.
+     * @return the account
+     */
+    public Account current() {
+        Principal principal = SecurityContextHolder.getContext().getAuthentication();
+        if (principal == null) {
+            return null;
+        }
+        return accountRepository.findOneByEmail(principal.getName());
+    }
+
+    /**
      * Initialize.
      */
     @PostConstruct
@@ -65,18 +78,6 @@ public class AccountService implements UserDetailsService {
 
     /**
      * Save account.
-     * @param account the account
-     * @return the account
-     */
-    @Transactional
-    public Account save(Account account) {
-        account.setPassword(passwordEncoder.encode(account.getPassword()));
-        accountRepository.save(account);
-        return account;
-    }
-
-    /**
-     * Save account.
      * @param email    the email
      * @param password the password
      * @param role     the role
@@ -85,6 +86,18 @@ public class AccountService implements UserDetailsService {
     @Transactional
     public Account save(String email, String password, String role) {
         return save(new Account(email, password, role));
+    }
+
+    /**
+     * Save account.
+     * @param account the account
+     * @return the account
+     */
+    @Transactional
+    public Account save(Account account) {
+        account.setPassword(passwordEncoder.encode(account.getPassword()));
+        accountRepository.save(account);
+        return account;
     }
 
     /**

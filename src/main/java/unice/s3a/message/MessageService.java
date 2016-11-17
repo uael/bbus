@@ -3,13 +3,11 @@ package unice.s3a.message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import unice.s3a.account.Account;
-import unice.s3a.account.AccountRepository;
+import unice.s3a.account.AccountService;
 
-import java.security.Principal;
 import java.util.Date;
 
 /**
@@ -18,20 +16,18 @@ import java.util.Date;
 @Service
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class MessageService {
-    private final AccountRepository accountRepository;
+    private final AccountService accountService;
     private final MessageRepository messageRepository;
-    private final Principal principal;
 
     /**
      * Instantiates a new Message service.
      * @param messageRepository the message repository
-     * @param accountRepository the account repository
+     * @param accountService the account service
      */
     @Autowired
-    public MessageService(final MessageRepository messageRepository, final AccountRepository accountRepository) {
+    public MessageService(final MessageRepository messageRepository, final AccountService accountService) {
         this.messageRepository = messageRepository;
-        this.accountRepository = accountRepository;
-        principal = SecurityContextHolder.getContext().getAuthentication();
+        this.accountService = accountService;
     }
 
     /**
@@ -62,7 +58,7 @@ public class MessageService {
      * @return the message
      */
     public Message save(final String content) {
-        return save(new Message(accountRepository.findOneByEmail(principal.getName()), content));
+        return save(new Message(accountService.current(), content));
     }
 
     /**
@@ -72,7 +68,7 @@ public class MessageService {
      * @return the message
      */
     public Message save(final String content, final Date expirationDate) {
-        return save(new Message(accountRepository.findOneByEmail(principal.getName()), content, expirationDate));
+        return save(new Message(accountService.current(), content, expirationDate));
     }
 
     /**

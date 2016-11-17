@@ -11,14 +11,6 @@ public class BusCreateForm {
     private String name;
 
     /**
-     * Create bus bus.
-     * @return the bus
-     */
-    public Bus createBus() {
-        return new Bus(getName());
-    }
-
-    /**
      * Gets name.
      * @return the name
      */

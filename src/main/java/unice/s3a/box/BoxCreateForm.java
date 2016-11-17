@@ -14,14 +14,6 @@ public class BoxCreateForm {
     @NotNull(message = NOT_BLANK_MESSAGE) private Bus bus;
 
     /**
-     * Create box box.
-     * @return the box
-     */
-    public Box createBox() {
-        return new Box(this.getName());
-    }
-
-    /**
      * Gets bus.
      * @return the bus
      */

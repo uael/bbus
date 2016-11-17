@@ -84,4 +84,15 @@ public class MessageService {
     public Message save(final Account producer, final String content) {
         return save(new Message(producer, content));
     }
+
+    /**
+     * Save message.
+     * @param producer       the producer
+     * @param content        the content
+     * @param expirationDate the expiration date
+     * @return the message
+     */
+    public Message save(Account producer, String content, final Date expirationDate) {
+        return save(new Message(producer, content, expirationDate));
+    }
 }

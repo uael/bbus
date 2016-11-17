@@ -65,7 +65,7 @@ class BusController {
             errors.rejectValue("name", "name", "A bus already exists for this name.");
             return CREATE;
         }
-        busService.save(busCreateForm.createBus());
+        busService.save(busCreateForm.getName());
         MessageHelper.addSuccessAttribute(ra, CREATE+".success", busCreateForm.getName());
         return "redirect:/"+CREATE;
     }

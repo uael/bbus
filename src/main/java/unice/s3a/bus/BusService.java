@@ -240,9 +240,18 @@ public class BusService {
     @Transactional
     public Bus save(Bus bus) {
         if (!bus.getBoxes().containsKey("Default")) {
-            bus.getBoxes().put("Default", boxService.save(new Box("Default")));
+            bus.getBoxes().put("Default", boxService.save("Default"));
         }
         busRepository.save(bus);
         return bus;
+    }
+
+    /**
+     * Save bus.
+     * @param name the name
+     * @return the bus
+     */
+    public Bus save(String name) {
+        return save(new Bus(name));
     }
 }

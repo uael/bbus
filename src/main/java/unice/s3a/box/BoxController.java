@@ -79,7 +79,7 @@ class BoxController {
         if (errors.hasErrors()) {
             return CREATE;
         }
-        busService.addBox(boxCreateForm.getBus(), boxService.save(boxCreateForm.createBox()));
+        busService.addBox(boxCreateForm.getBus(), boxService.save(boxCreateForm.getName()));
         MessageHelper.addSuccessAttribute(ra, CREATE+".success", boxCreateForm.getName());
         return "redirect:/"+CREATE;
     }

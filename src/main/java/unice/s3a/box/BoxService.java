@@ -95,7 +95,7 @@ public class BoxService {
      * @return the message
      */
     public Message emit(final Box box, Account producer, String content, final Date expirationDate) {
-        Message m = messageService.save(new Message(producer, content, expirationDate));
+        Message m = messageService.save(producer, content, expirationDate);
         box.getMessages().add(m);
         save(box);
         return m;
@@ -110,5 +110,14 @@ public class BoxService {
     public Box save(Box box) {
         boxRepository.save(box);
         return box;
+    }
+
+    /**
+     * Save box.
+     * @param name the name
+     * @return the box
+     */
+    public Box save(final String name) {
+        return save(new Box(name));
     }
 }

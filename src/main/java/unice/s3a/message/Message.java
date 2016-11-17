@@ -16,13 +16,11 @@ public class Message implements java.io.Serializable {
     @GeneratedValue
     private Long id;
 
-    @Column(name = "CONTENT")
     private String content;
 
-    @Column(name = "EXPIRATION_DATE")
     private Date expirationDate;
 
-    @JoinColumn(name = "ACCOUNT_ID")
+    @ManyToOne
     private Account producer;
 
     /**

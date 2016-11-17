@@ -4,10 +4,7 @@ import unice.s3a.account.Account;
 import unice.s3a.box.Box;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * The type Bus.
@@ -19,16 +16,14 @@ public class Bus implements java.io.Serializable {
     @Id
     private String name;
 
-    @ElementCollection(targetClass = Account.class, fetch = FetchType.EAGER)
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
         name = "SUBSCRIBERS",
-        joinColumns = @JoinColumn(name = "BUS_ID", unique=false),
-        inverseJoinColumns = @JoinColumn(name = "ACCOUNT_ID", unique=false)
+        joinColumns = @JoinColumn(name = "BUS_ID"),
+        inverseJoinColumns = @JoinColumn(name = "ACCOUNT_ID")
     )
-    private List<Account> subscribers = new ArrayList<>();
+    private Set<Account> subscribers = new HashSet<>();
 
-    @ElementCollection(targetClass = Box.class, fetch = FetchType.EAGER)
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
         name = "BOXES",
@@ -88,7 +83,7 @@ public class Bus implements java.io.Serializable {
      * Gets subscribers.
      * @return the subscribers
      */
-    public List<Account> getSubscribers() {
+    public Set<Account> getSubscribers() {
         return subscribers;
     }
 
@@ -96,7 +91,7 @@ public class Bus implements java.io.Serializable {
      * Sets subscribers.
      * @param subscribers the subscribers
      */
-    public void setSubscribers(final List<Account> subscribers) {
+    public void setSubscribers(final Set<Account> subscribers) {
         this.subscribers = subscribers;
     }
 
@@ -106,8 +101,7 @@ public class Bus implements java.io.Serializable {
      * @return the boolean
      */
     public boolean isSubscribed(Account account) {
-        boolean r = this.getSubscribers().contains(account);
-        return r;
+        return this.getSubscribers().contains(account);
     }
 
     /**

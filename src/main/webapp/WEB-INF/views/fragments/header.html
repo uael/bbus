@@ -26,7 +26,6 @@
                                 <li><a th:href="@{/bus/create}">Create</a></li>
                                 <li><a th:href="@{/bus/delete}">Delete</a></li>
                             </th:block>
-                            <li><a th:href="@{/bus/search}">Search</a></li>
                             <li><a th:href="@{/bus/list}">List</a></li>
                         </ul>
                     </li>
@@ -37,20 +36,18 @@
                                 <li><a th:href="@{/box/create}">Create</a></li>
                                 <li><a th:href="@{/box/delete}">Delete</a></li>
                             </th:block>
-                            <li><a th:href="@{/box/search}">Search</a></li>
                             <li><a th:href="@{/box/list}">List</a></li>
                         </ul>
                     </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Message <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <th:block th:if="${account.role == 'ROLE_PRODUCER'}" th:remove="tag">
+                    <th:block th:if="${account.role == 'ROLE_PRODUCER'}" th:remove="tag">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Message <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
                                 <li><a th:href="@{/message/emit}">Emit</a></li>
                                 <li><a th:href="@{/message/delete}">Delete</a></li>
-                            </th:block>
-                            <li><a th:href="@{/message/list}">List</a></li>
-                        </ul>
-                    </li>
+                            </ul>
+                        </li>
+                    </th:block>
                 </th:block>
             </ul>
             <ul class="nav navbar-nav navbar-right">

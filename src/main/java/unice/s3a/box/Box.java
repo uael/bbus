@@ -3,8 +3,8 @@ package unice.s3a.box;
 import unice.s3a.message.Message;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * The type Box.
@@ -17,17 +17,15 @@ public class Box implements java.io.Serializable {
     @GeneratedValue
     private Long id;
 
-    @Column(name = "NAME")
     private String name;
 
-    @ElementCollection(targetClass = Message.class, fetch = FetchType.EAGER)
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
         name = "MESSAGES",
         joinColumns = @JoinColumn(name = "BOX_ID"),
         inverseJoinColumns = @JoinColumn(name = "MESSAGE_ID")
     )
-    private List<Message> messages = new ArrayList<>();
+    private Set<Message> messages = new HashSet<>();
 
     /**
      * Instantiates a new Box.
@@ -62,7 +60,7 @@ public class Box implements java.io.Serializable {
      * Gets messages.
      * @return the messages
      */
-    public List<Message> getMessages() {
+    public Set<Message> getMessages() {
         return messages;
     }
 
@@ -70,7 +68,7 @@ public class Box implements java.io.Serializable {
      * Sets messages.
      * @param messages the messages
      */
-    public void setMessages(final ArrayList<Message> messages) {
+    public void setMessages(final Set<Message> messages) {
         this.messages = messages;
     }
 

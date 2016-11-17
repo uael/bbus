@@ -8,14 +8,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import unice.s3a.account.Account;
-import unice.s3a.account.AccountRepository;
-import unice.s3a.bus.Bus;
 import unice.s3a.bus.BusService;
 import unice.s3a.support.web.MessageHelper;
 
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +23,6 @@ class BoxController {
     private static final String CREATE = "box/create";
     private static final String DELETE = "box/delete";
     private static final String LIST = "box/list";
-    private final AccountRepository accountRepository;
     private final BoxService boxService;
     private final BusService busService;
 
@@ -35,23 +30,11 @@ class BoxController {
      * Instantiates a new Box controller.
      * @param boxService        the box service
      * @param busService        the bus service
-     * @param accountRepository the account repository
      */
     @Autowired
-    public BoxController(final BoxService boxService, final BusService busService, final AccountRepository accountRepository) {
+    public BoxController(final BoxService boxService, final BusService busService) {
         this.boxService = boxService;
         this.busService = busService;
-        this.accountRepository = accountRepository;
-    }
-
-    /**
-     * Populate buses list.
-     * @param principal the principal
-     * @return the list
-     */
-    @ModelAttribute("account")
-    public Account account(Principal principal) {
-        return principal != null ? accountRepository.findOneByEmail(principal.getName()) : null;
     }
 
     /**
@@ -63,6 +46,7 @@ class BoxController {
     @Secured("ROLE_AGENT")
     public String create(Model model) {
         model.addAttribute(new BoxCreateForm());
+        model.addAttribute("buses", new ArrayList<>(busService.findAll().values()));
         return CREATE;
     }
 
@@ -85,6 +69,19 @@ class BoxController {
     }
 
     /**
+     * Delete string.
+     * @param model the model
+     * @return the string
+     */
+    @RequestMapping(value = DELETE)
+    @Secured("ROLE_AGENT")
+    public String delete(Model model) {
+        model.addAttribute(new BoxDeleteForm());
+        model.addAttribute("buses", new ArrayList<>(busService.findAll().values()));
+        return DELETE;
+    }
+
+    /**
      * Create string.
      * @param boxDeleteForm the box delete form
      * @param errors        the errors
@@ -101,18 +98,6 @@ class BoxController {
         boxService.delete(boxDeleteForm.getBox());
         MessageHelper.addSuccessAttribute(ra, CREATE+".success", boxDeleteForm.getBox().getName());
         return "redirect:/"+DELETE;
-    }
-
-    /**
-     * Delete string.
-     * @param model the model
-     * @return the string
-     */
-    @RequestMapping(value = DELETE)
-    @Secured("ROLE_AGENT")
-    public String delete(Model model) {
-        model.addAttribute(new BoxDeleteForm());
-        return DELETE;
     }
 
     /**
@@ -133,14 +118,5 @@ class BoxController {
     @ResponseBody
     public List<Box> populateBoxes(@RequestParam(value = "busName") String busName) {
         return busService.getBusBoxes(busName);
-    }
-
-    /**
-     * Populate buses list.
-     * @return the list
-     */
-    @ModelAttribute("buses")
-    public List<Bus> populateBuses() {
-        return new ArrayList<>(busService.findAll().values());
     }
 }

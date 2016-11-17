@@ -233,6 +233,16 @@ public class BusService {
     }
 
     /**
+     * Find one bus.
+     * @param name the name
+     * @return the bus
+     */
+    @Transactional
+    public Bus findOne(String name) {
+        return busRepository.findOne(name);
+    }
+
+    /**
      * Save bus.
      * @param bus the bus
      * @return the bus

@@ -8,14 +8,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import unice.s3a.account.Account;
-import unice.s3a.account.AccountRepository;
 import unice.s3a.support.web.MessageHelper;
 
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The type Bus controller.
@@ -24,29 +20,28 @@ import java.util.List;
 class BusController {
     private static final String CREATE = "bus/create";
     private static final String DELETE = "bus/delete";
+    private static final String SUBSCRIBE = "bus/subscribe";
     private static final String LIST = "bus/list";
-    private final AccountRepository accountRepository;
     private final BusService busService;
 
     /**
      * Instantiates a new Bus controller.
      * @param busService        the bus service
-     * @param accountRepository the account repository
      */
     @Autowired
-    public BusController(final BusService busService, final AccountRepository accountRepository) {
+    public BusController(final BusService busService) {
         this.busService = busService;
-        this.accountRepository = accountRepository;
     }
 
     /**
-     * Populate buses list.
-     * @param principal the principal
-     * @return the list
+     * Create string.
+     * @param model the model
+     * @return the string
      */
-    @ModelAttribute("account")
-    public Account account(Principal principal) {
-        return principal != null ? accountRepository.findOneByEmail(principal.getName()) : null;
+    @RequestMapping(value = CREATE)
+    public String create(Model model) {
+        model.addAttribute(new BusCreateForm());
+        return CREATE;
     }
 
     /**
@@ -71,24 +66,14 @@ class BusController {
     }
 
     /**
-     * Create string.
-     * @param model the model
-     * @return the string
-     */
-    @RequestMapping(value = CREATE)
-    public String create(Model model) {
-        model.addAttribute(new BusCreateForm());
-        return CREATE;
-    }
-
-    /**
      * Delete string.
-     * @param model the model
+     * @param model     the model
      * @return the string
      */
     @RequestMapping(value = DELETE)
     public String delete(Model model) {
         model.addAttribute(new BusDeleteForm());
+        model.addAttribute("buses", new ArrayList<>(busService.findAll().values()));
         return DELETE;
     }
 
@@ -116,14 +101,5 @@ class BusController {
     @RequestMapping(value = LIST)
     public String list() {
         return LIST;
-    }
-
-    /**
-     * Populate buses list.
-     * @return the list
-     */
-    @ModelAttribute("buses")
-    public List<Bus> populateBuses() {
-        return new ArrayList<>(busService.findAll().values());
     }
 }

@@ -139,4 +139,17 @@ public class Message implements java.io.Serializable {
     public boolean isActive() {
         return this.expirationDate.after(new Date());
     }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) { return true; }
+        if (!(o instanceof Message)) { return false; }
+        Message message = (Message) o;
+        return getId().equals(message.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
+    }
 }

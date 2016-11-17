@@ -17,8 +17,37 @@
         <div th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(message.type)}, message=#{${message.message}(${#authentication.name})})">&nbsp;</div>
     </th:block>
     <p>
-        Welcome to the Spring MVC Quickstart application!
+        Welcome to Bbus !
     </p>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th style="width: 15%">Subscribe</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="bus : ${buses}">
+                    <th scope="row" th:text="${bus.name}">Onions</th>
+                    <td>
+                        <th:block th:if="${!bus.isSubscribed(account)}" th:remove="tag">
+                            <form method="post" th:action="@{/subscribe}" th:object="${subscribeForm}">
+                                <input type="hidden" name="bus" th:value="${bus.name}" />
+                                <button type="submit" class="btn btn-primary">Subscribe</button>
+                            </form>
+                        </th:block>
+                        <th:block th:if="${bus.isSubscribed(account)}" th:remove="tag">
+                            <form method="post" th:action="@{/unsubscribe}" th:object="${subscribeForm}">
+                                <input type="hidden" name="bus" th:value="${bus.name}" />
+                                <button type="submit" class="btn btn-primary">Unsubscribe</button>
+                            </form>
+                        </th:block>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 </body>
 </html>

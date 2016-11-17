@@ -106,4 +106,17 @@ public class Account implements java.io.Serializable {
     public void setRole(String role) {
         this.role = role;
     }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) { return true; }
+        if (!(o instanceof Account)) { return false; }
+        Account account = (Account) o;
+        return getId().equals(account.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
+    }
 }

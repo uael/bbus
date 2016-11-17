@@ -68,7 +68,7 @@ public class AccountServiceTest {
 
 	private boolean hasAuthority(UserDetails userDetails, String role) {
 		return userDetails.getAuthorities().stream()
-				.map(GrantedAuthority::getAuthority)
-				.anyMatch(isEqual(role));
+			.map(GrantedAuthority::getAuthority)
+			.anyMatch(isEqual(role));
 	}
 }

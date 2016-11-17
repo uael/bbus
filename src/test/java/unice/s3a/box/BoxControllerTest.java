@@ -42,25 +42,25 @@ public class BoxControllerTest extends WebAppConfigurationAware {
     @Test
     public void displaysBoxDelete() throws Exception {
         super.mockMvc.perform(get("/box/delete"))
-                .andExpect(model().attributeExists("boxDeleteForm"))
-                .andExpect(view().name("box/delete"))
-                .andExpect(content().string(
-                        allOf(
-                                containsString("<title>Box - Delete</title>"),
-                                containsString("<legend>Delete new box</legend>")
-                        ))
-                );
+            .andExpect(model().attributeExists("boxDeleteForm"))
+            .andExpect(view().name("box/delete"))
+            .andExpect(content().string(
+                allOf(
+                    containsString("<title>Box - Delete</title>"),
+                    containsString("<legend>Delete new box</legend>")
+                ))
+            );
     }
 
     @Test
     public void displaysBoxList() throws Exception {
         super.mockMvc.perform(get("/box/list"))
-                .andExpect(view().name("box/list"))
-                .andExpect(content().string(
-                        allOf(
-                                containsString("<title>Box - List</title>"),
-                                containsString("<th>Name</th>")
-                        ))
-                );
+            .andExpect(view().name("box/list"))
+            .andExpect(content().string(
+                allOf(
+                    containsString("<title>Box - List</title>"),
+                    containsString("<th>Name</th>")
+                ))
+            );
     }
 }

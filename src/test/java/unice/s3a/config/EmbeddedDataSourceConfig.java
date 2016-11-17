@@ -18,7 +18,7 @@ public class EmbeddedDataSourceConfig {
     @Bean
     public DataSource dataSource() {
         return new EmbeddedDatabaseBuilder()
-                .setType(EmbeddedDatabaseType.HSQL)
-                .build();
+            .setType(EmbeddedDatabaseType.HSQL)
+            .build();
     }
 }

@@ -63,6 +63,10 @@ class BoxController {
         if (errors.hasErrors()) {
             return CREATE;
         }
+        if (busService.findOne(boxCreateForm.getBus().getName()).getBoxes().containsKey(boxCreateForm.getName())) {
+            errors.rejectValue("name", "name", "A box already exists for this name.");
+            return CREATE;
+        }
         busService.addBox(boxCreateForm.getBus(), boxService.save(boxCreateForm.getName()));
         MessageHelper.addSuccessAttribute(ra, CREATE+".success", boxCreateForm.getName());
         return "redirect:/"+CREATE;

@@ -3,17 +3,25 @@ package unice.s3a.box;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import unice.s3a.bus.BusService;
 import unice.s3a.config.WebAppConfigurationAware;
 
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 public class BoxControllerTest extends WebAppConfigurationAware {
+    @Autowired
+    private BoxService boxService;
+    @Autowired
+    private BusService busService;
+
     @Before
     public void setUp() throws Exception {
         SecurityContextHolder.getContext().setAuthentication(
@@ -62,5 +70,54 @@ public class BoxControllerTest extends WebAppConfigurationAware {
                     containsString("<th>Name</th>")
                 ))
             );
+    }
+
+    /**
+     * Bus create already exist.
+     * @throws Exception the exception
+     */
+    @Test
+    public void boxCreateAlreadyExist() throws Exception {
+
+        mockMvc.perform(post("/box/create").param("bus", "Nice").param("name", "City"))
+                .andExpect(view().name("box/create"))
+                .andExpect(content().string(
+                        allOf(
+                                containsString("Form contains errors. Please try again."),
+                                containsString("A box already exists for this name.")
+                        ))
+                );
+    }
+
+    /**
+     * Box create empty name.
+     * @throws Exception the exception
+     */
+    @Test
+    public void boxCreateEmptyName() throws Exception {
+        mockMvc.perform(post("/box/create").param("bus", "Nice").param("name", ""))
+                .andExpect(view().name("box/create"))
+                .andExpect(content().string(
+                        allOf(
+                                containsString("Form contains errors. Please try again."),
+                                containsString("The value may not be empty!")
+                        ))
+                );
+    }
+
+    /**
+     * Box delete empty name.
+     * @throws Exception the exception
+     */
+    @Test
+    public void boxDeleteEmptyName() throws Exception {
+        mockMvc.perform(post("/box/delete").param("bus", "Nice").param("name", ""))
+                .andExpect(view().name("box/delete"))
+                .andExpect(content().string(
+                        allOf(
+                                containsString("Form contains errors. Please try again."),
+                                containsString("The value may not be empty!")
+                        ))
+                );
     }
 }

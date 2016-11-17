@@ -118,4 +118,30 @@ public class BusControllerTest extends WebAppConfigurationAware {
                 ))
             );
     }
+
+    /**
+     * Bus delete empty name.
+     * @throws Exception the exception
+     */
+    @Test
+    public void busDeleteEmptyName() throws Exception {
+        mockMvc.perform(post("/bus/delete"))
+                .andExpect(view().name("bus/delete"))
+                .andExpect(content().string(
+                        allOf(
+                                containsString("Form contains errors. Please try again."),
+                                containsString("The value may not be empty!")
+                        ))
+                );
+    }
+
+    /**
+     * Bus delete successfully.
+     * @throws Exception the exception
+     */
+    @Test
+    public void busDeleteSuccessfully() throws Exception {
+        mockMvc.perform(post("/bus/delete").param("bus", "Nice"))
+                .andExpect(redirectedUrl("/bus/delete"));
+    }
 }

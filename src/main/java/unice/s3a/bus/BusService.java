@@ -228,8 +228,15 @@ public class BusService {
      */
     @PostConstruct
     protected void initialize() {
-        save(new Bus("Nice"));
-        save(new Bus("Nice Circulation"));
+        Bus nice = new Bus("Nice");
+        save(nice);
+        addBox(nice, boxService.save("City"));
+        addBox(nice, boxService.save("Market"));
+
+        Bus niceCirculation = new Bus("Nice Circulation");
+        save(niceCirculation);
+        addBox(nice, boxService.save("Embouteillage"));
+        addBox(nice, boxService.save("Rond-point"));
     }
 
     /**

@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
  * The type Bus delete form.
  */
 public class BusDeleteForm {
-    private static final String NOT_BLANK_MESSAGE = "{notNull.message}";
+    private static final String NOT_BLANK_MESSAGE = "{notBlank.message}";
     @NotNull(message = NOT_BLANK_MESSAGE)
     private Bus bus;
 

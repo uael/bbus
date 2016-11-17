@@ -22,8 +22,19 @@ import java.util.List;
 @Controller
 class MessageController {
     private static final String EMIT = "message/emit";
-    @Autowired private MessageService messageService;
-    @Autowired private BusService busService;
+    private final BusService busService;
+    private final MessageService messageService;
+
+    /**
+     * Instantiates a new Message controller.
+     * @param messageService the message service
+     * @param busService     the bus service
+     */
+    @Autowired
+    public MessageController(final MessageService messageService, final BusService busService) {
+        this.messageService = messageService;
+        this.busService = busService;
+    }
 
     /**
      * Emit string.
@@ -48,7 +59,7 @@ class MessageController {
         if (errors.hasErrors()) {
             return EMIT;
         }
-        messageService.save(messageEmitForm.createMessage());
+        busService.emit(messageEmitForm.getBox(), messageEmitForm.getContent(), messageEmitForm.getDate());
         MessageHelper.addSuccessAttribute(ra, EMIT+".success");
         return "redirect:/"+EMIT;
     }

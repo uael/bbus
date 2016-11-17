@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import unice.s3a.account.Account;
 import unice.s3a.box.Box;
+import unice.s3a.box.BoxService;
+import unice.s3a.message.Message;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -20,19 +22,30 @@ import java.util.List;
 @Service
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class BusService {
-    @Autowired private BusRepository busRepository;
+    private final BoxService boxService;
+    private final BusRepository busRepository;
+
+    /**
+     * Instantiates a new Bus service.
+     * @param busRepository the bus repository
+     * @param boxService    the box service
+     */
+    @Autowired
+    public BusService(final BusRepository busRepository, final BoxService boxService) {
+        this.busRepository = busRepository;
+        this.boxService = boxService;
+    }
 
     /**
      * Add box box.
-     * @param busName the bus name
-     * @param b       the b
+     * @param bus the bus name
+     * @param b   the b
      * @return the box
      */
     @Transactional
-    public Box addBox(String busName, Box b) {
-        Bus bus = busRepository.findOne(busName);
-        bus.getBoxMap().put(b.getName(), b);
-        busRepository.save(bus);
+    public Box addBox(Bus bus, Box b) {
+        bus.getBoxes().put(b.getName(), b);
+        save(bus);
         return b;
     }
 
@@ -43,101 +56,128 @@ public class BusService {
      */
     @Transactional
     public Bus delete(Bus bus) {
+        for (Box box : bus.getBoxes().values()) {
+            boxService.delete(box);
+        }
         busRepository.delete(bus);
         return bus;
     }
 
     /**
-     * Emit boolean.
-     * @param busName the bus name
-     * @param message the message
-     * @return the boolean
+     * Delete box.
+     * @param box the box
+     * @return the box
      */
-    public boolean emit(final String busName, final String message) {
-        return busRepository.findOne(busName).emit(message);
+    @Transactional
+    public Box delete(Box box) {
+        Bus bus = null;
+        for (Bus _bus : busRepository.findAll()) {
+            if (_bus.getBoxes().containsValue(box)) {
+                bus = _bus;
+                break;
+            }
+        }
+        if (bus != null) {
+            bus.getBoxes().remove(box.getName());
+            save(bus);
+        }
+        return box;
     }
 
     /**
-     * Emit boolean.
-     * @param busName        the bus name
+     * Emit message.
+     * @param bus     the bus
+     * @param message the message
+     * @return the message
+     */
+    @Transactional
+    public Message emit(final Bus bus, final String message) {
+        return boxService.emit(bus.getBoxes().get("Default"), message);
+    }
+
+    /**
+     * Emit message.
+     * @param bus            the bus
      * @param message        the message
      * @param expirationDate the expiration date
-     * @return the boolean
+     * @return the message
      */
-    public boolean emit(final String busName, final String message, final Date expirationDate) {
-        return busRepository.findOne(busName).emit(message, expirationDate);
+    @Transactional
+    public Message emit(final Bus bus, final String message, final Date expirationDate) {
+        return boxService.emit(bus.getBoxes().get("Default"), message, expirationDate);
     }
 
     /**
-     * Emit boolean.
-     * @param busName  the bus name
+     * Emit message.
+     * @param bus      the bus
      * @param producer the producer
      * @param content  the content
-     * @return the boolean
+     * @return the message
      */
-    public boolean emit(final String busName, Account producer, String content) {
-        return busRepository.findOne(busName).emit(producer, content);
+    @Transactional
+    public Message emit(final Bus bus, Account producer, String content) {
+        return boxService.emit(bus.getBoxes().get("Default"), producer, content);
     }
 
     /**
-     * Emit boolean.
-     * @param busName        the bus name
+     * Emit message.
+     * @param bus            the bus
      * @param producer       the producer
      * @param content        the content
      * @param expirationDate the expiration date
-     * @return the boolean
+     * @return the message
      */
-    public boolean emit(final String busName, Account producer, String content, final Date expirationDate) {
-        return busRepository.findOne(busName).emit(producer, content, expirationDate);
+    @Transactional
+    public Message emit(final Bus bus, Account producer, String content, final Date expirationDate) {
+        return boxService.emit(bus.getBoxes().get("Default"), producer, content, expirationDate);
     }
 
     /**
-     * Emit at boolean.
-     * @param busName the bus name
-     * @param boxName the box name
+     * Emit message.
+     * @param box     the box
      * @param message the message
-     * @return the boolean
+     * @return the message
      */
-    public boolean emitAt(final String busName, final String boxName, final String message) {
-        return busRepository.findOne(busName).emitAt(boxName, message);
+    @Transactional
+    public Message emit(final Box box, final String message) {
+        return boxService.emit(box, message);
     }
 
     /**
-     * Emit at boolean.
-     * @param busName        the bus name
-     * @param boxName        the box name
+     * Emit message.
+     * @param box            the box
      * @param message        the message
      * @param expirationDate the expiration date
-     * @return the boolean
+     * @return the message
      */
-    public boolean emitAt(final String busName, final String boxName, final String message, final Date expirationDate) {
-        return busRepository.findOne(busName).emitAt(boxName, message, expirationDate);
+    @Transactional
+    public Message emit(final Box box, final String message, final Date expirationDate) {
+        return boxService.emit(box, message, expirationDate);
     }
 
     /**
-     * Emit at boolean.
-     * @param busName  the bus name
-     * @param boxName  the box name
+     * Emit message.
+     * @param box      the box
      * @param producer the producer
      * @param content  the content
-     * @return the boolean
+     * @return the message
      */
-    public boolean emitAt(final String busName, final String boxName, Account producer, String content) {
-        return busRepository.findOne(busName).emitAt(boxName, producer, content);
+    @Transactional
+    public Message emit(final Box box, Account producer, String content) {
+        return boxService.emit(box, producer, content);
     }
 
     /**
-     * Emit at boolean.
-     * @param busName        the bus name
-     * @param boxName        the box name
+     * Emit message.
+     * @param box            the box
      * @param producer       the producer
      * @param content        the content
      * @param expirationDate the expiration date
-     * @return the boolean
+     * @return the message
      */
-    public boolean emitAt(final String busName, final String boxName, Account producer, String content, final Date
-        expirationDate) {
-        return busRepository.findOne(busName).emitAt(boxName, producer, content, expirationDate);
+    @Transactional
+    public Message emit(final Box box, Account producer, String content, final Date expirationDate) {
+        return boxService.emit(box, producer, content, expirationDate);
     }
 
     /**
@@ -160,7 +200,27 @@ public class BusService {
      */
     @Transactional
     public List<Box> getBusBoxes(String name) {
-        return new ArrayList<>(busRepository.findOne(name).getBoxMap().values());
+        return new ArrayList<>(busRepository.findOne(name).getBoxes().values());
+    }
+
+    /**
+     * Has boolean.
+     * @param name the name
+     * @return the boolean
+     */
+    @Transactional
+    public boolean has(String name) {
+        return busRepository.findOne(name) != null;
+    }
+
+    /**
+     * Has boolean.
+     * @param bus  the bus
+     * @param name the name
+     * @return the boolean
+     */
+    public boolean hasBox(Bus bus, String name) {
+        return bus.getBoxes().containsKey(name);
     }
 
     /**
@@ -179,6 +239,9 @@ public class BusService {
      */
     @Transactional
     public Bus save(Bus bus) {
+        if (!bus.getBoxes().containsKey("Default")) {
+            bus.getBoxes().put("Default", boxService.save(new Box("Default")));
+        }
         busRepository.save(bus);
         return bus;
     }

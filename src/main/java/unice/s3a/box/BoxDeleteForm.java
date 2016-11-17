@@ -9,8 +9,10 @@ import javax.validation.constraints.NotNull;
  */
 public class BoxDeleteForm {
     private static final String NOT_BLANK_MESSAGE = "{notBlank.message}";
-    @NotNull(message = NOT_BLANK_MESSAGE) private Box box;
-    @NotNull(message = NOT_BLANK_MESSAGE) private Bus bus;
+    @NotNull(message = NOT_BLANK_MESSAGE)
+    private Box box;
+    @NotNull(message = NOT_BLANK_MESSAGE)
+    private Bus bus;
 
     /**
      * Gets box.

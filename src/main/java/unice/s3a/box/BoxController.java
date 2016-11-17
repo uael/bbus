@@ -2,6 +2,7 @@ package unice.s3a.box;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -10,7 +11,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import unice.s3a.account.Account;
 import unice.s3a.account.AccountRepository;
 import unice.s3a.bus.Bus;
-import unice.s3a.bus.BusRepository;
 import unice.s3a.bus.BusService;
 import unice.s3a.support.web.MessageHelper;
 
@@ -27,26 +27,21 @@ class BoxController {
     private static final String CREATE = "box/create";
     private static final String DELETE = "box/delete";
     private static final String LIST = "box/list";
-    private final BoxRepository boxRepository;
+    private final AccountRepository accountRepository;
     private final BoxService boxService;
-    private final BusRepository busRepository;
     private final BusService busService;
-    @Autowired private AccountRepository accountRepository;
 
     /**
      * Instantiates a new Box controller.
-     * @param busRepository the bus service
-     * @param boxService    the box service
-     * @param boxRepository the box repository
-     * @param busService    the bus service
+     * @param boxService        the box service
+     * @param busService        the bus service
+     * @param accountRepository the account repository
      */
     @Autowired
-    public BoxController(final BusRepository busRepository, final BoxService boxService, final BoxRepository
-        boxRepository, final BusService busService) {
-        this.busRepository = busRepository;
+    public BoxController(final BoxService boxService, final BusService busService, final AccountRepository accountRepository) {
         this.boxService = boxService;
-        this.boxRepository = boxRepository;
         this.busService = busService;
+        this.accountRepository = accountRepository;
     }
 
     /**
@@ -65,6 +60,7 @@ class BoxController {
      * @return the string
      */
     @RequestMapping(value = CREATE)
+    @Secured("ROLE_AGENT")
     public String create(Model model) {
         model.addAttribute(new BoxCreateForm());
         return CREATE;
@@ -78,11 +74,12 @@ class BoxController {
      * @return the string
      */
     @RequestMapping(value = CREATE, method = RequestMethod.POST)
+    @Secured("ROLE_AGENT")
     public String create(@Valid @ModelAttribute BoxCreateForm boxCreateForm, Errors errors, RedirectAttributes ra) {
         if (errors.hasErrors()) {
             return CREATE;
         }
-        busService.addBox(boxCreateForm.getBus().getName(), boxService.save(new Box(boxCreateForm.getName())));
+        busService.addBox(boxCreateForm.getBus(), boxService.save(boxCreateForm.createBox()));
         MessageHelper.addSuccessAttribute(ra, CREATE+".success", boxCreateForm.getName());
         return "redirect:/"+CREATE;
     }
@@ -95,11 +92,13 @@ class BoxController {
      * @return the string
      */
     @RequestMapping(value = DELETE, method = RequestMethod.POST)
-    public String create(@Valid @ModelAttribute BoxDeleteForm boxDeleteForm, Errors errors, RedirectAttributes ra) {
+    @Secured("ROLE_AGENT")
+    public String delete(@Valid @ModelAttribute BoxDeleteForm boxDeleteForm, Errors errors, RedirectAttributes ra) {
         if (errors.hasErrors()) {
             return DELETE;
         }
-        boxRepository.delete(boxDeleteForm.getBox());
+        busService.delete(boxDeleteForm.getBox());
+        boxService.delete(boxDeleteForm.getBox());
         MessageHelper.addSuccessAttribute(ra, CREATE+".success", boxDeleteForm.getBox().getName());
         return "redirect:/"+DELETE;
     }
@@ -110,6 +109,7 @@ class BoxController {
      * @return the string
      */
     @RequestMapping(value = DELETE)
+    @Secured("ROLE_AGENT")
     public String delete(Model model) {
         model.addAttribute(new BoxDeleteForm());
         return DELETE;
@@ -117,11 +117,10 @@ class BoxController {
 
     /**
      * List string.
-     * @param model the model
      * @return the string
      */
     @RequestMapping(value = LIST)
-    public String list(Model model) {
+    public String list() {
         return LIST;
     }
 

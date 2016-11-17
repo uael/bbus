@@ -7,7 +7,8 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 public class BusCreateForm {
     private static final String NOT_BLANK_MESSAGE = "{notBlank.message}";
-    @NotBlank(message = NOT_BLANK_MESSAGE) private String name;
+    @NotBlank(message = NOT_BLANK_MESSAGE)
+    private String name;
 
     /**
      * Create bus bus.

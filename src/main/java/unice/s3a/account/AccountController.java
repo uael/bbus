@@ -33,7 +33,7 @@ class AccountController {
     @RequestMapping(value = "account/{id}", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
-    @Secured("ROLE_ADMIN")
+    @Secured("ROLE_AGENT")
     public Account account(@PathVariable("id") Long id) {
         return accountRepository.findOne(id);
     }
@@ -46,7 +46,7 @@ class AccountController {
     @RequestMapping(value = "account/current", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
-    @Secured({ "ROLE_USER", "ROLE_ADMIN" })
+    @Secured({ "ROLE_USER", "ROLE_AGENT", "ROLE_PRODUCER" })
     public Account currentAccount(Principal principal) {
         Assert.notNull(principal);
         return accountRepository.findOneByEmail(principal.getName());

@@ -13,18 +13,14 @@ import java.util.Date;
  */
 public class MessageEmitForm {
     private static final String NOT_EMPTY_MESSAGE = "{notEmpty.message}";
-    @NotNull(message = NOT_EMPTY_MESSAGE) private Bus bus;
-    @NotNull(message = NOT_EMPTY_MESSAGE) private Box box;
-    @NotEmpty(message = NOT_EMPTY_MESSAGE) private String content;
-    @DateTimeFormat(pattern = "dd-MMM-YYYY") private Date date;
-
-    /**
-     * Create message message.
-     * @return the message
-     */
-    public Message createMessage() {
-        return new Message(content, date);
-    }
+    @NotNull(message = NOT_EMPTY_MESSAGE)
+    private Bus bus;
+    @NotNull(message = NOT_EMPTY_MESSAGE)
+    private Box box;
+    @NotEmpty(message = NOT_EMPTY_MESSAGE)
+    private String content;
+    @DateTimeFormat(pattern = "dd-MMM-YYYY")
+    private Date date = null;
 
     /**
      * Gets box.

@@ -2,16 +2,14 @@ package unice.s3a.signup;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import unice.s3a.config.WebAppConfigurationAware;
 
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
-import unice.s3a.config.WebAppConfigurationAware;
 
 public class SignupControllerTest extends WebAppConfigurationAware {
 
@@ -32,36 +30,38 @@ public class SignupControllerTest extends WebAppConfigurationAware {
 
     @Test
     public void signUpEmptyMail() throws Exception {
-        mockMvc.perform(post("/signup").param("email", "").param("role", "ROLE_AGENT").param("password", "etib"))
-                .andExpect(r -> Assert.assertNull(r.getRequest().getSession().getAttribute(SEC_CONTEXT_ATTR)))
-                .andExpect(content().string(
-                        allOf(
-                                containsString("Sign up errors. Please try again."),
-                                containsString("The value may not be empty!")
-                        ))
-                );
+        mockMvc.perform(post("/signup").param("email", "").param("role", "ROLE_AGENT")
+            .param("password", "etib"))
+            .andExpect(r -> Assert.assertNull(r.getRequest().getSession().getAttribute(SEC_CONTEXT_ATTR)))
+            .andExpect(content().string(
+                allOf(
+                    containsString("Sign up errors. Please try again."),
+                    containsString("The value may not be empty!")
+                ))
+            );
     }
 
     @Test
     public void signUpEmptyPassword() throws Exception {
-        mockMvc.perform(post("/signup").param("email", "azerty@gmail.com").param("role", "ROLE_AGENT").param("password", ""))
-                .andExpect(r -> Assert.assertNull(r.getRequest().getSession().getAttribute(SEC_CONTEXT_ATTR)))
-                .andExpect(content().string(
-                        allOf(
-                                containsString("Sign up errors. Please try again."),
-                                containsString("The value may not be empty!")
-                        ))
-                );
+        mockMvc.perform(post("/signup")
+            .param("email", "azerty@gmail.com")
+            .param("role", "ROLE_AGENT")
+            .param("password", ""))
+            .andExpect(r -> Assert.assertNull(r.getRequest().getSession().getAttribute(SEC_CONTEXT_ATTR)))
+            .andExpect(content().string(
+                allOf(
+                    containsString("Sign up errors. Please try again."),
+                    containsString("The value may not be empty!")
+                ))
+            );
     }
 
     @Test
     public void signUpValidControl() throws Exception {
-        mockMvc.perform(post("/signup").param("email", "azerty@gmail.com").param("role", "ROLE_AGENT").param("password", "aze"))
-                .andExpect(r -> Assert.assertNull(r.getRequest().getSession().getAttribute(SEC_CONTEXT_ATTR)))
-                .andExpect(content().string(
-                        allOf(
-                                containsString("Congratulations You have successfully signed up")
-                        ))
-                );
+        mockMvc.perform(post("/signup")
+            .param("email", "azerty@gmail.com")
+            .param("role", "ROLE_AGENT")
+            .param("password", "aze"))
+            .andExpect(redirectedUrl("/"));
     }
 }

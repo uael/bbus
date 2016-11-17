@@ -18,7 +18,7 @@ public class BoxCreateForm {
      * @return the box
      */
     public Box createBox() {
-        return this.getBus().addBox(this.getName());
+        return new Box(this.getName());
     }
 
     /**

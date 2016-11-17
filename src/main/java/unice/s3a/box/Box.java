@@ -1,11 +1,9 @@
 package unice.s3a.box;
 
-import unice.s3a.account.Account;
 import unice.s3a.message.Message;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,11 +13,20 @@ import java.util.List;
 @Entity
 @Table(name = "BOX")
 public class Box implements java.io.Serializable {
-    @Id private String name;
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @Column(name = "NAME")
+    private String name;
+
     @ElementCollection(targetClass = Message.class, fetch = FetchType.EAGER)
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "MESSAGES", joinColumns = @JoinColumn(name = "BOX_ID"),
-        inverseJoinColumns = @JoinColumn(name = "MESSAGE_ID"))
+    @JoinTable(
+        name = "MESSAGES",
+        joinColumns = @JoinColumn(name = "BOX_ID"),
+        inverseJoinColumns = @JoinColumn(name = "MESSAGE_ID")
+    )
     private List<Message> messages = new ArrayList<>();
 
     /**
@@ -36,43 +43,19 @@ public class Box implements java.io.Serializable {
     }
 
     /**
-     * Emit boolean.
-     * @param message the message
-     * @return the boolean
+     * Gets id.
+     * @return the id
      */
-    public boolean emit(final String message) {
-        return this.messages.add(new Message(message));
+    public Long getId() {
+        return id;
     }
 
     /**
-     * Emit boolean.
-     * @param message        the message
-     * @param expirationDate the expiration date
-     * @return the boolean
+     * Sets id.
+     * @param id the id
      */
-    public boolean emit(final String message, final Date expirationDate) {
-        return this.messages.add(new Message(message, expirationDate));
-    }
-
-    /**
-     * Emit boolean.
-     * @param producer the producer
-     * @param content  the content
-     * @return the boolean
-     */
-    public boolean emit(Account producer, String content) {
-        return this.messages.add(new Message(producer, content));
-    }
-
-    /**
-     * Emit boolean.
-     * @param producer       the producer
-     * @param content        the content
-     * @param expirationDate the expiration date
-     * @return the boolean
-     */
-    public boolean emit(Account producer, String content, final Date expirationDate) {
-        return this.messages.add(new Message(producer, content, expirationDate));
+    public void setId(final Long id) {
+        this.id = id;
     }
 
     /**

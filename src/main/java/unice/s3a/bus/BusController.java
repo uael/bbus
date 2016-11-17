@@ -25,16 +25,18 @@ class BusController {
     private static final String CREATE = "bus/create";
     private static final String DELETE = "bus/delete";
     private static final String LIST = "bus/list";
+    private final AccountRepository accountRepository;
     private final BusService busService;
-    @Autowired private AccountRepository accountRepository;
 
     /**
      * Instantiates a new Bus controller.
-     * @param busService the bus service
+     * @param busService        the bus service
+     * @param accountRepository the account repository
      */
     @Autowired
-    public BusController(final BusService busService) {
+    public BusController(final BusService busService, final AccountRepository accountRepository) {
         this.busService = busService;
+        this.accountRepository = accountRepository;
     }
 
     /**
@@ -57,6 +59,10 @@ class BusController {
     @RequestMapping(value = CREATE, method = RequestMethod.POST)
     public String create(@Valid @ModelAttribute BusCreateForm busCreateForm, Errors errors, RedirectAttributes ra) {
         if (errors.hasErrors()) {
+            return CREATE;
+        }
+        if (busService.has(busCreateForm.getName())) {
+            errors.rejectValue("name", "name", "A bus already exists for this name.");
             return CREATE;
         }
         busService.save(busCreateForm.createBus());
@@ -105,11 +111,10 @@ class BusController {
 
     /**
      * List string.
-     * @param model the model
      * @return the string
      */
     @RequestMapping(value = LIST)
-    public String list(Model model) {
+    public String list() {
         return LIST;
     }
 

@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import unice.s3a.bus.Bus;
 import unice.s3a.bus.BusService;
 import unice.s3a.support.web.MessageHelper;
 
@@ -38,6 +39,15 @@ class BoxController {
     }
 
     /**
+     * Populate buses list.
+     * @return the list
+     */
+    @ModelAttribute("buses")
+    public List<Bus> attributeBuses() {
+        return new ArrayList<>(busService.findAll().values());
+    }
+
+    /**
      * Create string.
      * @param model the model
      * @return the string
@@ -46,7 +56,6 @@ class BoxController {
     @Secured("ROLE_AGENT")
     public String create(Model model) {
         model.addAttribute(new BoxCreateForm());
-        model.addAttribute("buses", new ArrayList<>(busService.findAll().values()));
         return CREATE;
     }
 
@@ -67,7 +76,7 @@ class BoxController {
             errors.rejectValue("name", "name", "A box already exists for this name.");
             return CREATE;
         }
-        busService.addBox(boxCreateForm.getBus(), boxService.save(boxCreateForm.getName()));
+        busService.addBox(boxCreateForm.getBus().getName(), boxService.save(boxCreateForm.getName()));
         MessageHelper.addSuccessAttribute(ra, CREATE+".success", boxCreateForm.getName());
         return "redirect:/"+CREATE;
     }
@@ -81,7 +90,6 @@ class BoxController {
     @Secured("ROLE_AGENT")
     public String delete(Model model) {
         model.addAttribute(new BoxDeleteForm());
-        model.addAttribute("buses", new ArrayList<>(busService.findAll().values()));
         return DELETE;
     }
 
@@ -120,7 +128,7 @@ class BoxController {
      */
     @RequestMapping(value = "boxes", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public List<Box> populateBoxes(@RequestParam(value = "busName") String busName) {
+    public List<Box> boxes(@RequestParam(value = "busName") String busName) {
         return busService.getBusBoxes(busName);
     }
 }

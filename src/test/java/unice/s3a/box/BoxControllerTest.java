@@ -55,7 +55,7 @@ public class BoxControllerTest extends WebAppConfigurationAware {
             .andExpect(content().string(
                 allOf(
                     containsString("<title>Box - Delete</title>"),
-                    containsString("<legend>Delete new box</legend>")
+                    containsString("<legend>Delete a box</legend>")
                 ))
             );
     }
@@ -78,15 +78,14 @@ public class BoxControllerTest extends WebAppConfigurationAware {
      */
     @Test
     public void boxCreateAlreadyExist() throws Exception {
-
         mockMvc.perform(post("/box/create").param("bus", "Nice").param("name", "City"))
-                .andExpect(view().name("box/create"))
-                .andExpect(content().string(
-                        allOf(
-                                containsString("Form contains errors. Please try again."),
-                                containsString("A box already exists for this name.")
-                        ))
-                );
+            .andExpect(view().name("box/create"))
+            .andExpect(content().string(
+                allOf(
+                    containsString("Form contains errors. Please try again."),
+                    containsString("A box already exists for this name.")
+                ))
+            );
     }
 
     /**
@@ -96,13 +95,13 @@ public class BoxControllerTest extends WebAppConfigurationAware {
     @Test
     public void boxCreateEmptyName() throws Exception {
         mockMvc.perform(post("/box/create").param("bus", "Nice").param("name", ""))
-                .andExpect(view().name("box/create"))
-                .andExpect(content().string(
-                        allOf(
-                                containsString("Form contains errors. Please try again."),
-                                containsString("The value may not be empty!")
-                        ))
-                );
+            .andExpect(view().name("box/create"))
+            .andExpect(content().string(
+                allOf(
+                    containsString("Form contains errors. Please try again."),
+                    containsString("The value may not be empty!")
+                ))
+            );
     }
 
     /**
@@ -112,12 +111,12 @@ public class BoxControllerTest extends WebAppConfigurationAware {
     @Test
     public void boxDeleteEmptyName() throws Exception {
         mockMvc.perform(post("/box/delete").param("bus", "Nice").param("name", ""))
-                .andExpect(view().name("box/delete"))
-                .andExpect(content().string(
-                        allOf(
-                                containsString("Form contains errors. Please try again."),
-                                containsString("The value may not be empty!")
-                        ))
-                );
+            .andExpect(view().name("box/delete"))
+            .andExpect(content().string(
+                allOf(
+                    containsString("Form contains errors. Please try again."),
+                    containsString("The value may not be empty!")
+                ))
+            );
     }
 }

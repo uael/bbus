@@ -25,6 +25,11 @@ public class Message implements java.io.Serializable {
 
     /**
      * Instantiates a new Message.
+     */
+    public Message() { }
+
+    /**
+     * Instantiates a new Message.
      * @param content the content
      */
     public Message(final String content) {

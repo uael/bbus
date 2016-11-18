@@ -38,12 +38,13 @@ public class BusService {
 
     /**
      * Add box box.
-     * @param bus the bus name
+     * @param busName the bus name
      * @param b   the b
      * @return the box
      */
     @Transactional
-    public Box addBox(Bus bus, Box b) {
+    public Box addBox(String busName, Box b) {
+        Bus bus = this.findOne(busName);
         bus.getBoxes().put(b.getName(), b);
         save(bus);
         return b;
@@ -91,8 +92,8 @@ public class BusService {
      * @return the message
      */
     @Transactional
-    public Message emit(final Bus bus, final String message) {
-        return boxService.emit(bus.getBoxes().get("Default"), message);
+    public Message emit(final String bus, final String message) {
+        return boxService.emit(this.findOne(bus).getBoxes().get("Default").getId(), message);
     }
 
     /**
@@ -103,8 +104,8 @@ public class BusService {
      * @return the message
      */
     @Transactional
-    public Message emit(final Bus bus, final String message, final Date expirationDate) {
-        return boxService.emit(bus.getBoxes().get("Default"), message, expirationDate);
+    public Message emit(final String bus, final String message, final Date expirationDate) {
+        return boxService.emit(this.findOne(bus).getBoxes().get("Default").getId(), message, expirationDate);
     }
 
     /**
@@ -115,8 +116,8 @@ public class BusService {
      * @return the message
      */
     @Transactional
-    public Message emit(final Bus bus, Account producer, String content) {
-        return boxService.emit(bus.getBoxes().get("Default"), producer, content);
+    public Message emit(final String bus, Account producer, String content) {
+        return boxService.emit(this.findOne(bus).getBoxes().get("Default").getId(), producer, content);
     }
 
     /**
@@ -128,8 +129,8 @@ public class BusService {
      * @return the message
      */
     @Transactional
-    public Message emit(final Bus bus, Account producer, String content, final Date expirationDate) {
-        return boxService.emit(bus.getBoxes().get("Default"), producer, content, expirationDate);
+    public Message emit(final String bus, Account producer, String content, final Date expirationDate) {
+        return boxService.emit(this.findOne(bus).getBoxes().get("Default").getId(), producer, content, expirationDate);
     }
 
     /**
@@ -139,8 +140,8 @@ public class BusService {
      * @return the message
      */
     @Transactional
-    public Message emit(final Box box, final String message) {
-        return boxService.emit(box, message);
+    public Message emit(final String bus, final String box, final String message) {
+        return boxService.emit(this.findOne(bus).getBoxes().get(box).getId(), message);
     }
 
     /**
@@ -151,8 +152,8 @@ public class BusService {
      * @return the message
      */
     @Transactional
-    public Message emit(final Box box, final String message, final Date expirationDate) {
-        return boxService.emit(box, message, expirationDate);
+    public Message emit(final String bus, final String box, final String message, final Date expirationDate) {
+        return boxService.emit(this.findOne(bus).getBoxes().get(box).getId(), message, expirationDate);
     }
 
     /**
@@ -163,8 +164,8 @@ public class BusService {
      * @return the message
      */
     @Transactional
-    public Message emit(final Box box, Account producer, String content) {
-        return boxService.emit(box, producer, content);
+    public Message emit(final String bus, final String box, Account producer, String content) {
+        return boxService.emit(this.findOne(bus).getBoxes().get(box).getId(), producer, content);
     }
 
     /**
@@ -176,8 +177,8 @@ public class BusService {
      * @return the message
      */
     @Transactional
-    public Message emit(final Box box, Account producer, String content, final Date expirationDate) {
-        return boxService.emit(box, producer, content, expirationDate);
+    public Message emit(final String bus, final String box, Account producer, String content, final Date expirationDate) {
+        return boxService.emit(this.findOne(bus).getBoxes().get(box).getId(), producer, content, expirationDate);
     }
 
     /**
@@ -230,13 +231,13 @@ public class BusService {
     protected void initialize() {
         Bus nice = new Bus("Nice");
         save(nice);
-        addBox(nice, boxService.save("City"));
-        addBox(nice, boxService.save("Market"));
+        addBox("Nice", boxService.save("City"));
+        addBox("Nice", boxService.save("Market"));
 
         Bus niceCirculation = new Bus("Nice Circulation");
         save(niceCirculation);
-        addBox(niceCirculation, boxService.save("Embouteillage"));
-        addBox(niceCirculation, boxService.save("Rond-point"));
+        addBox("Nice Circulation", boxService.save("Embouteillage"));
+        addBox("Nice Circulation", boxService.save("Rond-point"));
     }
 
     /**

@@ -1,6 +1,7 @@
 package unice.s3a.message;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -37,10 +38,20 @@ class MessageController {
     }
 
     /**
+     * Populate buses list.
+     * @return the list
+     */
+    @ModelAttribute("buses")
+    public List<Bus> attributeBuses() {
+        return new ArrayList<>(busService.findAll().values());
+    }
+
+    /**
      * Emit string.
      * @param model the model
      * @return the string
      */
+    @Secured("ROLE_PRODUCER")
     @RequestMapping(value = EMIT)
     public String emit(Model model) {
         model.addAttribute(new MessageEmitForm());
@@ -54,22 +65,14 @@ class MessageController {
      * @param ra              the ra
      * @return the string
      */
+    @Secured("ROLE_PRODUCER")
     @RequestMapping(value = EMIT, method = RequestMethod.POST)
     public String emit(@Valid @ModelAttribute MessageEmitForm messageEmitForm, Errors errors, RedirectAttributes ra) {
         if (errors.hasErrors()) {
             return EMIT;
         }
-        busService.emit(messageEmitForm.getBox(), messageEmitForm.getContent(), messageEmitForm.getDate());
+        busService.emit(messageEmitForm.getBus().getName(), messageEmitForm.getBox().getName(), messageEmitForm.getContent(), messageEmitForm.getDate());
         MessageHelper.addSuccessAttribute(ra, EMIT+".success");
         return "redirect:/"+EMIT;
-    }
-
-    /**
-     * Populate buses list.
-     * @return the list
-     */
-    @ModelAttribute("buses")
-    public List<Bus> populateBuses() {
-        return new ArrayList<>(busService.findAll().values());
     }
 }

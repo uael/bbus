@@ -235,8 +235,8 @@ public class BusService {
 
         Bus niceCirculation = new Bus("Nice Circulation");
         save(niceCirculation);
-        addBox(nice, boxService.save("Embouteillage"));
-        addBox(nice, boxService.save("Rond-point"));
+        addBox(niceCirculation, boxService.save("Embouteillage"));
+        addBox(niceCirculation, boxService.save("Rond-point"));
     }
 
     /**

@@ -26,10 +26,19 @@ import java.util.Collections;
 @Service
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class AccountService implements UserDetailsService {
+    private final AccountRepository repository;
+    private final PasswordEncoder passwordEncoder;
+
+    /**
+     * Instantiates a new Account service.
+     * @param passwordEncoder the password encoder
+     * @param repository      the repository
+     */
     @Autowired
-    private AccountRepository accountRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public AccountService(final PasswordEncoder passwordEncoder, final AccountRepository repository) {
+        this.passwordEncoder = passwordEncoder;
+        this.repository = repository;
+    }
 
     private Authentication authenticate(Account account) {
         return new UsernamePasswordAuthenticationToken(createUser(account),
@@ -55,7 +64,7 @@ public class AccountService implements UserDetailsService {
         if (principal == null) {
             return null;
         }
-        return accountRepository.findOneByEmail(principal.getName());
+        return repository.findOneByEmail(principal.getName());
     }
 
     /**
@@ -69,7 +78,7 @@ public class AccountService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Account account = accountRepository.findOneByEmail(username);
+        Account account = repository.findOneByEmail(username);
         if (account == null) {
             throw new UsernameNotFoundException("user not found");
         }
@@ -96,7 +105,7 @@ public class AccountService implements UserDetailsService {
     @Transactional
     public Account save(Account account) {
         account.setPassword(passwordEncoder.encode(account.getPassword()));
-        accountRepository.save(account);
+        repository.save(account);
         return account;
     }
 

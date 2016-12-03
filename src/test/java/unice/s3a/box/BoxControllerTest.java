@@ -127,6 +127,6 @@ public class BoxControllerTest extends WebAppConfigurationAware {
     @Test
     public void boxDeleteSuccessfully() throws Exception {
         mockMvc.perform(post("/box/delete").param("bus", "Nice").param("box", "Market"))
-                .andExpect(redirectedUrl("/box/delete"));
+            .andExpect(redirectedUrl("/box/delete"));
     }
 }

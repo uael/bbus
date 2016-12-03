@@ -73,4 +73,26 @@ public class HomeController {
         );
         return "redirect:/";
     }
+
+    /**
+     * Create string.
+     * @param subscribeForm the bus delete form
+     * @param ra            the ra
+     * @return the string
+     */
+    @RequestMapping(value = "unsubscribe", method = RequestMethod.POST)
+    public String unsubscribe(@Valid @ModelAttribute SubscribeForm subscribeForm, Errors errors, RedirectAttributes ra) {
+        Bus bus = busService.findOne(subscribeForm.getBus());
+        if (bus == null) {
+            errors.rejectValue("bus", "bus", "Bus "+subscribeForm.getBus()+" does not exist.");
+            return "home/homeSignedIn";
+        }
+        bus.unsubscribe(accountService.current());
+        busService.save(bus);
+        MessageHelper.addSuccessAttribute(ra,
+            "unsubscribe.success",
+            subscribeForm.getBus()
+        );
+        return "redirect:/";
+    }
 }

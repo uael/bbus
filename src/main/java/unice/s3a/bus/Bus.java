@@ -113,6 +113,15 @@ public class Bus implements java.io.Serializable {
         return !isSubscribed(account) && this.getSubscribers().add(account);
     }
 
+    /**
+     * Unsubscribe boolean.
+     * @param account the account
+     * @return the boolean
+     */
+    public boolean unsubscribe(Account account) {
+        return isSubscribed(account) && this.getSubscribers().remove(account);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

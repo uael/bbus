@@ -1,6 +1,7 @@
 package unice.s3a.bus;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -12,6 +13,7 @@ import unice.s3a.support.web.MessageHelper;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The type Bus controller.
@@ -34,10 +36,20 @@ class BusController {
     }
 
     /**
+     * Populate buses list.
+     * @return the list
+     */
+    @ModelAttribute("buses")
+    public List<Bus> attributeBuses() {
+        return new ArrayList<>(busService.findAll().values());
+    }
+
+    /**
      * Create string.
      * @param model the model
      * @return the string
      */
+    @Secured("ROLE_AGENT")
     @RequestMapping(value = CREATE)
     public String create(Model model) {
         model.addAttribute(new BusCreateForm());
@@ -51,6 +63,7 @@ class BusController {
      * @param ra            the ra
      * @return the string
      */
+    @Secured("ROLE_AGENT")
     @RequestMapping(value = CREATE, method = RequestMethod.POST)
     public String create(@Valid @ModelAttribute BusCreateForm busCreateForm, Errors errors, RedirectAttributes ra) {
         if (errors.hasErrors()) {
@@ -70,10 +83,10 @@ class BusController {
      * @param model     the model
      * @return the string
      */
+    @Secured("ROLE_AGENT")
     @RequestMapping(value = DELETE)
     public String delete(Model model) {
         model.addAttribute(new BusDeleteForm());
-        model.addAttribute("buses", new ArrayList<>(busService.findAll().values()));
         return DELETE;
     }
 
@@ -84,6 +97,7 @@ class BusController {
      * @param ra            the ra
      * @return the string
      */
+    @Secured("ROLE_AGENT")
     @RequestMapping(value = DELETE, method = RequestMethod.POST)
     public String delete(@Valid @ModelAttribute BusDeleteForm busDeleteForm, Errors errors, RedirectAttributes ra) {
         if (errors.hasErrors()) {

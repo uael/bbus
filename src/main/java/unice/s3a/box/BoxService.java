@@ -47,12 +47,13 @@ public class BoxService {
 
     /**
      * Emit message.
-     * @param box     the box
+     * @param id     the box id
      * @param message the message
      * @return the message
      */
-    public Message emit(final Box box, final String message) {
+    public Message emit(final Long id, final String message) {
         Message m = messageService.save(message);
+        Box box = boxRepository.findOne(id);
         box.getMessages().add(m);
         save(box);
         return m;
@@ -60,13 +61,14 @@ public class BoxService {
 
     /**
      * Emit message.
-     * @param box            the box
+     * @param id     the box id
      * @param message        the message
      * @param expirationDate the expiration date
      * @return the message
      */
-    public Message emit(final Box box, final String message, final Date expirationDate) {
+    public Message emit(final Long id, final String message, final Date expirationDate) {
         Message m = messageService.save(message, expirationDate);
+        Box box = boxRepository.findOne(id);
         box.getMessages().add(m);
         save(box);
         return m;
@@ -74,13 +76,14 @@ public class BoxService {
 
     /**
      * Emit message.
-     * @param box      the box
+     * @param id     the box id
      * @param producer the producer
      * @param content  the content
      * @return the message
      */
-    public Message emit(final Box box, Account producer, String content) {
+    public Message emit(final Long id, Account producer, String content) {
         Message m = messageService.save(producer, content);
+        Box box = boxRepository.findOne(id);
         box.getMessages().add(m);
         save(box);
         return m;
@@ -88,14 +91,15 @@ public class BoxService {
 
     /**
      * Emit message.
-     * @param box            the box
+     * @param id     the box id
      * @param producer       the producer
      * @param content        the content
      * @param expirationDate the expiration date
      * @return the message
      */
-    public Message emit(final Box box, Account producer, String content, final Date expirationDate) {
+    public Message emit(final Long id, Account producer, String content, final Date expirationDate) {
         Message m = messageService.save(producer, content, expirationDate);
+        Box box = boxRepository.findOne(id);
         box.getMessages().add(m);
         save(box);
         return m;

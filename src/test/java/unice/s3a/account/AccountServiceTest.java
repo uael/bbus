@@ -21,7 +21,7 @@ import static org.mockito.Mockito.*;
 public class AccountServiceTest {
 
 	@InjectMocks
-	private AccountService accountService = new AccountService();
+	private AccountService accountService;
 
 	@Mock
 	private AccountRepository accountRepositoryMock;

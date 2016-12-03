@@ -41,6 +41,7 @@ class MessageController {
      * @param model the model
      * @return the string
      */
+    @Secured("ROLE_PRODUCER")
     @RequestMapping(value = EMIT)
     public String emit(Model model) {
         model.addAttribute(new MessageEmitForm());
@@ -54,6 +55,7 @@ class MessageController {
      * @param ra              the ra
      * @return the string
      */
+    @Secured("ROLE_PRODUCER")
     @RequestMapping(value = EMIT, method = RequestMethod.POST)
     public String emit(@Valid @ModelAttribute MessageEmitForm messageEmitForm, Errors errors, RedirectAttributes ra) {
         if (errors.hasErrors()) {

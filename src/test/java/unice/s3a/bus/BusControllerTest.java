@@ -98,7 +98,7 @@ public class BusControllerTest extends WebAppConfigurationAware {
             .andExpect(content().string(
                 allOf(
                         containsString("<title>Bus - Delete</title>"),
-                        containsString("<legend>Delete bus</legend>")
+                        containsString("<legend>Delete a bus</legend>")
                 ))
             );
     }
@@ -126,13 +126,13 @@ public class BusControllerTest extends WebAppConfigurationAware {
     @Test
     public void busDeleteEmptyName() throws Exception {
         mockMvc.perform(post("/bus/delete"))
-                .andExpect(view().name("bus/delete"))
-                .andExpect(content().string(
-                        allOf(
-                                containsString("Form contains errors. Please try again."),
-                                containsString("The value may not be empty!")
-                        ))
-                );
+            .andExpect(view().name("bus/delete"))
+            .andExpect(content().string(
+                allOf(
+                    containsString("Form contains errors. Please try again."),
+                    containsString("The value may not be empty!")
+                ))
+            );
     }
 
     /**
@@ -142,6 +142,6 @@ public class BusControllerTest extends WebAppConfigurationAware {
     @Test
     public void busDeleteSuccessfully() throws Exception {
         mockMvc.perform(post("/bus/delete").param("bus", "Nice"))
-                .andExpect(redirectedUrl("/bus/delete"));
+            .andExpect(redirectedUrl("/bus/delete"));
     }
 }

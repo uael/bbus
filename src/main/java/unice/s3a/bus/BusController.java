@@ -113,7 +113,8 @@ class BusController {
      * @return the string
      */
     @RequestMapping(value = LIST)
-    public String list() {
+    public String list(Model model) {
+        model.addAttribute("buses", new ArrayList<>(busService.findAll().values()));
         return LIST;
     }
 }

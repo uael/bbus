@@ -37,7 +37,7 @@ public class HomeControllerTest extends WebAppConfigurationAware {
      * @throws Exception the exception
      */
     @Test
-    public void subscribeBusSuccefully() throws Exception {
+    public void subscribeBusSuccessfully() throws Exception {
         mockMvc.perform(post("/subscribe").param("bus", "Nice Circulation"))
             .andExpect(redirectedUrl("/"));
     }
@@ -47,7 +47,7 @@ public class HomeControllerTest extends WebAppConfigurationAware {
      * @throws Exception the exception
      */
     @Test
-    public void subscribeBusUnsuccefully() throws Exception {
+    public void subscribeBusFailed() throws Exception {
         mockMvc.perform(post("/unsubscribe").param("bus", "Nice Circulation"))
             .andExpect(redirectedUrl("/"));
     }

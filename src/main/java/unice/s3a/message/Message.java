@@ -3,6 +3,7 @@ package unice.s3a.message;
 import unice.s3a.account.Account;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.util.Date;
 
 /**
@@ -22,6 +23,7 @@ public class Message implements java.io.Serializable {
 
     @ManyToOne
     private Account producer;
+    private Instant created;
 
     /**
      * Instantiates a new Message.
@@ -69,6 +71,7 @@ public class Message implements java.io.Serializable {
         } else {
             this.expirationDate = expirationDate;
         }
+        this.created = Instant.now();
     }
 
     /**
@@ -141,6 +144,14 @@ public class Message implements java.io.Serializable {
      */
     public boolean isActive() {
         return this.expirationDate.after(new Date());
+    }
+
+    /**
+     * Gets header.
+     * @return the header
+     */
+    public String getHeader() {
+        return this.created.toString()+(this.producer != null ? " @"+this.producer.getEmail() : "");
     }
 
     @Override

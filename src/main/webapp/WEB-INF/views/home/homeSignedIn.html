@@ -16,53 +16,51 @@
         <!-- /* The message code is returned from the @Controller */ -->
         <div th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(message.type)}, message=#{${message.message}(${#authentication.name})})">&nbsp;</div>
     </th:block>
-    <p>
-        Welcome to Bbus !
-    </p>
-    <div class="table-responsive">
-        <table class="table table-striped table-bordered table-hover">
-            <thead>
-                <tr>
-                    <th style="width: 25%">Name</th>
-                    <th></th>
-                    <th style="width: 15%">Subscribe</th>
-                </tr>
-            </thead>
-            <tbody>
-                <th:block th:each="bus : ${buses}">
-                    <tr>
-                        <th colspan="2" scope="row" th:text="${bus.name}">Onions</th>
-                        <td>
-                            <th:block th:if="${!bus.isSubscribed(account)}" th:remove="tag">
-                                <form method="post" th:action="@{/subscribe}" th:object="${subscribeForm}">
-                                    <input type="hidden" name="bus" th:value="${bus.name}" />
-                                    <button type="submit" class="btn btn-primary">Subscribe</button>
-                                </form>
-                            </th:block>
-                            <th:block th:if="${bus.isSubscribed(account)}" th:remove="tag">
-                                <form method="post" th:action="@{/unsubscribe}" th:object="${subscribeForm}">
-                                    <input type="hidden" name="bus" th:value="${bus.name}" />
-                                    <button type="submit" class="btn btn-primary">Unsubscribe</button>
-                                </form>
-                            </th:block>
-                        </td>
-                    </tr>
-                    <th:block th:if="${bus.isSubscribed(account)}" th:remove="tag">
-                        <th:block th:each="box : ${bus.boxes}">
-                            <tr>
-                                <td colspan="3" scope="row" th:text="${'-> ' + box.key}">Onions</td>
-                            </tr>
-                            <th:block th:each="msg : ${box.value.messages}">
-                                <tr>
-                                    <td></td>
-                                    <td colspan="2" scope="row" th:text="${msg.content}">Onions</td>
-                                </tr>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading">Subscribe to a bus</div>
+                <!-- List group -->
+                <div class="list-group">
+                    <th:block th:each="bus : ${buses}">
+                        <th:block th:if="${!bus.isSubscribed(account)}" th:remove="tag">
+                            <form method="post" th:action="@{/subscribe}" th:object="${subscribeForm}">
+                                <input type="hidden" name="bus" th:value="${bus.name}" />
+                                <button type="submit" class="list-group-item" th:text="${bus.name}"></button>
+                            </form>
+                        </th:block>
+                        <th:block th:if="${bus.isSubscribed(account)}" th:remove="tag">
+                            <form method="post" th:action="@{/unsubscribe}" th:object="${subscribeForm}">
+                                <input type="hidden" name="bus" th:value="${bus.name}" />
+                                <button type="submit" class="list-group-item active" th:text="${bus.name}"></button>
+                            </form>
+                        </th:block>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Messages
+                </div>
+                <div class="panel-body">
+                    <th:block th:each="bus : ${buses}">
+                        <th:block th:if="${bus.isSubscribed(account)}" th:remove="tag">
+                            <th:block th:each="box : ${bus.boxes}">
+                                <th:block th:each="msg : ${box.value.messages}">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading" th:text="${box.key + ' - ' + msg.header}"></div>
+                                        <div class="panel-body" th:text="${msg.content}"></div>
+                                    </div>
+                                </th:block>
                             </th:block>
                         </th:block>
                     </th:block>
-                </th:block>
-            </tbody>
-        </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>

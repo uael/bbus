@@ -19,7 +19,7 @@ public class Box implements java.io.Serializable {
 
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
         name = "MESSAGES",
         joinColumns = @JoinColumn(name = "BOX_ID"),
@@ -92,9 +92,7 @@ public class Box implements java.io.Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Box box = (Box) o;
-
         return id != null ? id.equals(box.id) : box.id == null;
     }
 

@@ -67,7 +67,7 @@ public class BoxService {
      * @return the message
      */
     public Message emit(final Long id, final String message) {
-        Message m = messageService.save(message);
+        Message m =new Message(message);
         Box box = boxRepository.findOne(id);
         box.getMessages().add(m);
         save(box);
@@ -82,7 +82,7 @@ public class BoxService {
      * @return the message
      */
     public Message emit(final Long id, final String message, final Date expirationDate) {
-        Message m = messageService.save(message, expirationDate);
+        Message m = new Message(message, expirationDate);
         Box box = boxRepository.findOne(id);
         box.getMessages().add(m);
         save(box);
@@ -97,7 +97,7 @@ public class BoxService {
      * @return the message
      */
     public Message emit(final Long id, Account producer, String content) {
-        Message m = messageService.save(producer, content);
+        Message m = new Message(producer, content);
         Box box = boxRepository.findOne(id);
         box.getMessages().add(m);
         save(box);
@@ -113,7 +113,7 @@ public class BoxService {
      * @return the message
      */
     public Message emit(final Long id, Account producer, String content, final Date expirationDate) {
-        Message m = messageService.save(producer, content, expirationDate);
+        Message m = new Message(producer, content, expirationDate);
         Box box = boxRepository.findOne(id);
         box.getMessages().add(m);
         save(box);

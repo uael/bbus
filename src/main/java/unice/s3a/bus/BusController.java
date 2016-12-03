@@ -22,7 +22,6 @@ import java.util.List;
 class BusController {
     private static final String CREATE = "bus/create";
     private static final String DELETE = "bus/delete";
-    private static final String SUBSCRIBE = "bus/subscribe";
     private static final String LIST = "bus/list";
     private final BusService busService;
 

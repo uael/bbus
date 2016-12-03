@@ -4,6 +4,7 @@ import unice.s3a.account.Account;
 import unice.s3a.box.Box;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.util.*;
 
 /**
@@ -14,6 +15,9 @@ import java.util.*;
 @Table(name = "BUS")
 public class Bus implements java.io.Serializable {
     @Id
+    @GeneratedValue
+    private Long id;
+
     private String name;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -32,6 +36,7 @@ public class Bus implements java.io.Serializable {
     )
     @MapKey(name = "name")
     private Map<String, Box> boxes = new HashMap<>();
+    private Instant created;
 
     /**
      * Instantiates a new Bus.
@@ -42,9 +47,28 @@ public class Bus implements java.io.Serializable {
      * Instantiates a new unice.s3a.bus.Bus.
      * @param name the name
      */
-    public Bus(String name) {
-        this();
+    public Bus(String name, Box... boxes) {
         this.name = name;
+        this.created = Instant.now();
+        for (Box box : boxes) {
+            this.boxes.put(box.getName(), box);
+        }
+    }
+
+    /**
+     * Gets id.
+     * @return the id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * Sets id.
+     * @param id the id
+     */
+    public void setId(final Long id) {
+        this.id = id;
     }
 
     /**
@@ -88,6 +112,14 @@ public class Bus implements java.io.Serializable {
     }
 
     /**
+     * Gets created.
+     * @return the created
+     */
+    public Instant getCreated() {
+        return created;
+    }
+
+    /**
      * Sets subscribers.
      * @param subscribers the subscribers
      */
@@ -123,17 +155,15 @@ public class Bus implements java.io.Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
+    public boolean equals(final Object o) {
+        if (this == o) { return true; }
+        if (!(o instanceof Bus)) { return false; }
         Bus bus = (Bus) o;
-
-        return name != null ? name.equals(bus.name) : bus.name == null;
+        return getId() != null ? getId().equals(bus.getId()) : bus.getId() == null;
     }
 
     @Override
     public int hashCode() {
-        return name != null ? name.hashCode() : 0;
+        return getId() != null ? getId().hashCode() : 0;
     }
 }

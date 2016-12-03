@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
  * The interface Bus repository.
  */
 @Repository
-public interface BusRepository extends JpaRepository<Bus, String> { }
+public interface BusRepository extends JpaRepository<Bus, Long> {
+    Bus findOneByName(String name);
+}

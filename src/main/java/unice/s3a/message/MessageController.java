@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import unice.s3a.account.AccountService;
 import unice.s3a.bus.Bus;
 import unice.s3a.bus.BusService;
 import unice.s3a.support.web.MessageHelper;
@@ -25,16 +26,20 @@ class MessageController {
     private static final String EMIT = "message/emit";
     private final BusService busService;
     private final MessageService messageService;
+    private final AccountService accountService;
 
     /**
      * Instantiates a new Message controller.
      * @param messageService the message service
      * @param busService     the bus service
+     * @param accountService the account service
      */
     @Autowired
-    public MessageController(final MessageService messageService, final BusService busService) {
+    public MessageController(final MessageService messageService, final BusService busService, final AccountService
+        accountService) {
         this.messageService = messageService;
         this.busService = busService;
+        this.accountService = accountService;
     }
 
     /**
@@ -63,8 +68,11 @@ class MessageController {
             return EMIT;
         }
         busService.emit(
-            messageEmitForm.getBus(), messageEmitForm.getBox(),
-            messageEmitForm.getContent(), messageEmitForm.getDate()
+            messageEmitForm.getBus(),
+            messageEmitForm.getBox(),
+            accountService.current(),
+            messageEmitForm.getContent(),
+            messageEmitForm.getDate()
         );
         MessageHelper.addSuccessAttribute(ra, EMIT+".success", messageEmitForm.getContent());
         return "redirect:/"+EMIT;

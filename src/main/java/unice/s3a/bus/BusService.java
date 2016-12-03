@@ -68,7 +68,7 @@ public class BusService {
      */
     @Transactional
     public Bus delete(String bus) {
-        return delete(busRepository.findOne(bus));
+        return delete(busRepository.findOneByName(bus));
     }
 
     /**
@@ -208,7 +208,7 @@ public class BusService {
      */
     @Transactional
     public List<Box> getBusBoxes(String name) {
-        return new ArrayList<>(busRepository.findOne(name).getBoxes().values());
+        return new ArrayList<>(busRepository.findOneByName(name).getBoxes().values());
     }
 
     /**
@@ -218,7 +218,7 @@ public class BusService {
      */
     @Transactional
     public boolean has(String name) {
-        return busRepository.findOne(name) != null;
+        return busRepository.findOneByName(name) != null;
     }
 
     /**
@@ -236,15 +236,14 @@ public class BusService {
      */
     @PostConstruct
     protected void initialize() {
-        Bus nice = new Bus("Nice");
-        save(nice);
-        addBox("Nice", boxService.save("City"));
-        addBox("Nice", boxService.save("Market"));
-
-        Bus niceCirculation = new Bus("Nice Circulation");
-        save(niceCirculation);
-        addBox("Nice Circulation", boxService.save("Embouteillage"));
-        addBox("Nice Circulation", boxService.save("Rond-point"));
+        save(new Bus("Nice",
+            new Box("City"),
+            new Box("Market")
+        ));
+        save(new Bus("Nice Circulation",
+            new Box("Embouteillage"),
+            new Box("point")
+        ));
     }
 
     /**
@@ -254,7 +253,7 @@ public class BusService {
      */
     @Transactional
     public Bus findOne(String name) {
-        return busRepository.findOne(name);
+        return busRepository.findOneByName(name);
     }
 
     /**
@@ -265,7 +264,7 @@ public class BusService {
     @Transactional
     public Bus save(Bus bus) {
         if (!bus.getBoxes().containsKey("Default")) {
-            bus.getBoxes().put("Default", boxService.save("Default"));
+            bus.getBoxes().put("Default", new Box("Default"));
         }
         busRepository.save(bus);
         return bus;

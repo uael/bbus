@@ -74,6 +74,7 @@ public class AccountService implements UserDetailsService {
     protected void initialize() {
         save(new Account("user", "demo", "ROLE_USER"));
         save(new Account("admin", "admin", "ROLE_AGENT"));
+        save(new Account("producer", "producer", "ROLE_PRODUCER"));
     }
 
     @Override

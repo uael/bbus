@@ -1,23 +1,22 @@
 package unice.s3a.box;
 
 import org.hibernate.validator.constraints.NotBlank;
-import unice.s3a.bus.Bus;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * The type Box create form.
  */
 public class BoxCreateForm {
     private static final String NOT_BLANK_MESSAGE = "{notBlank.message}";
-    @NotBlank(message = NOT_BLANK_MESSAGE) private String name;
-    @NotNull(message = NOT_BLANK_MESSAGE) private Bus bus;
+    @NotBlank(message = NOT_BLANK_MESSAGE)
+    private String name;
+    @NotBlank(message = NOT_BLANK_MESSAGE)
+    private String bus;
 
     /**
      * Gets bus.
      * @return the bus
      */
-    public Bus getBus() {
+    public String getBus() {
         return bus;
     }
 
@@ -25,7 +24,7 @@ public class BoxCreateForm {
      * Sets bus.
      * @param bus the bus
      */
-    public void setBus(final Bus bus) {
+    public void setBus(final String bus) {
         this.bus = bus;
     }
 

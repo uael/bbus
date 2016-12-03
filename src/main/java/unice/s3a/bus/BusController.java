@@ -104,7 +104,7 @@ class BusController {
             return DELETE;
         }
         busService.delete(busDeleteForm.getBus());
-        MessageHelper.addSuccessAttribute(ra, DELETE+".success", busDeleteForm.getBus().getName());
+        MessageHelper.addSuccessAttribute(ra, DELETE+".success", busDeleteForm.getBus());
         return "redirect:/"+DELETE;
     }
 

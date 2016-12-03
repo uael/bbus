@@ -57,11 +57,18 @@ public class BusService {
      */
     @Transactional
     public Bus delete(Bus bus) {
-        for (Box box : bus.getBoxes().values()) {
-            boxService.delete(box);
-        }
         busRepository.delete(bus);
         return bus;
+    }
+
+    /**
+     * Delete bus.
+     * @param bus the bus
+     * @return the bus
+     */
+    @Transactional
+    public Bus delete(String bus) {
+        return delete(busRepository.findOne(bus));
     }
 
     /**

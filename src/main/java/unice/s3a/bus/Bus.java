@@ -24,7 +24,7 @@ public class Bus implements java.io.Serializable {
     )
     private Set<Account> subscribers = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
         name = "BOXES",
         joinColumns = @JoinColumn(name = "BUS_ID"),

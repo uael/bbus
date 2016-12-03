@@ -72,11 +72,11 @@ class BoxController {
         if (errors.hasErrors()) {
             return CREATE;
         }
-        if (busService.findOne(boxCreateForm.getBus().getName()).getBoxes().containsKey(boxCreateForm.getName())) {
+        if (busService.findOne(boxCreateForm.getBus()).getBoxes().containsKey(boxCreateForm.getName())) {
             errors.rejectValue("name", "name", "A box already exists for this name.");
             return CREATE;
         }
-        busService.addBox(boxCreateForm.getBus().getName(), boxService.save(boxCreateForm.getName()));
+        busService.addBox(boxCreateForm.getBus(), boxService.save(boxCreateForm.getName()));
         MessageHelper.addSuccessAttribute(ra, CREATE+".success", boxCreateForm.getName());
         return "redirect:/"+CREATE;
     }
@@ -106,9 +106,8 @@ class BoxController {
         if (errors.hasErrors()) {
             return DELETE;
         }
-        busService.delete(boxDeleteForm.getBox());
         boxService.delete(boxDeleteForm.getBox());
-        MessageHelper.addSuccessAttribute(ra, CREATE+".success", boxDeleteForm.getBox().getName());
+        MessageHelper.addSuccessAttribute(ra, CREATE+".success", boxDeleteForm.getBox());
         return "redirect:/"+DELETE;
     }
 

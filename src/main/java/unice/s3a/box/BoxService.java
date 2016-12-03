@@ -6,6 +6,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import unice.s3a.account.Account;
+import unice.s3a.bus.BusService;
 import unice.s3a.message.Message;
 import unice.s3a.message.MessageService;
 
@@ -18,16 +19,19 @@ import java.util.Date;
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class BoxService {
     private final BoxRepository boxRepository;
+    private final BusService busService;
     private final MessageService messageService;
 
     /**
      * Instantiates a new Box service.
      * @param boxRepository  the bus repository
+     * @param busService     the bus service
      * @param messageService the message service
      */
     @Autowired
-    public BoxService(final BoxRepository boxRepository, final MessageService messageService) {
+    public BoxService(final BoxRepository boxRepository, final BusService busService, final MessageService messageService) {
         this.boxRepository = boxRepository;
+        this.busService = busService;
         this.messageService = messageService;
     }
 
@@ -38,6 +42,7 @@ public class BoxService {
      */
     @Transactional
     public Box delete(Box box) {
+        busService.delete(box);
         for (Message message : box.getMessages()) {
             messageService.delete(message);
         }
@@ -46,8 +51,18 @@ public class BoxService {
     }
 
     /**
+     * Delete box.
+     * @param box the bus
+     * @return the box
+     */
+    @Transactional
+    public Box delete(String box) {
+        return delete(boxRepository.findOneByName(box));
+    }
+
+    /**
      * Emit message.
-     * @param id     the box id
+     * @param id      the box id
      * @param message the message
      * @return the message
      */
@@ -61,7 +76,7 @@ public class BoxService {
 
     /**
      * Emit message.
-     * @param id     the box id
+     * @param id             the box id
      * @param message        the message
      * @param expirationDate the expiration date
      * @return the message
@@ -76,7 +91,7 @@ public class BoxService {
 
     /**
      * Emit message.
-     * @param id     the box id
+     * @param id       the box id
      * @param producer the producer
      * @param content  the content
      * @return the message
@@ -91,7 +106,7 @@ public class BoxService {
 
     /**
      * Emit message.
-     * @param id     the box id
+     * @param id             the box id
      * @param producer       the producer
      * @param content        the content
      * @param expirationDate the expiration date

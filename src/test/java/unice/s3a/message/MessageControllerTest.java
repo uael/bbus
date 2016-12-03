@@ -26,7 +26,7 @@ public class MessageControllerTest extends WebAppConfigurationAware {
     @Before
     public void setUp() throws Exception {
         SecurityContextHolder.getContext().setAuthentication(
-            new UsernamePasswordAuthenticationToken("admin", "admin")
+            new UsernamePasswordAuthenticationToken("producer", "producer")
         );
     }
 
@@ -48,19 +48,6 @@ public class MessageControllerTest extends WebAppConfigurationAware {
             );
     }
 
-    /*@Test
-    public void displaysMessageDelete() throws Exception {
-        super.mockMvc.perform(get("/message/delete"))
-            .andExpect(model().attributeExists("messageDeleteForm"))
-            .andExpect(view().name("box/delete"))
-            .andExpect(content().string(
-                allOf(
-                    containsString("<title>Box - Delete</title>"),
-                    containsString("<legend>Delete new box</legend>")
-                ))
-            );
-    }*/
-
     /**
      * Box create empty name.
      * @throws Exception the exception
@@ -68,13 +55,13 @@ public class MessageControllerTest extends WebAppConfigurationAware {
     @Test
     public void messgaeEmitEmptyContent() throws Exception {
         mockMvc.perform(post("/message/emit").param("bus", "Nice").param("box", "City").param("content", "").param("date", "30-11-2016"))
-                .andExpect(view().name("message/emit"))
-                .andExpect(content().string(
-                        allOf(
-                                containsString("Form contains errors. Please try again."),
-                                containsString("The value may not be empty!")
-                        ))
-                );
+            .andExpect(view().name("message/emit"))
+            .andExpect(content().string(
+                allOf(
+                    containsString("Form contains errors. Please try again."),
+                    containsString("The value may not be empty!")
+                ))
+            );
     }
 
     /**
@@ -84,13 +71,13 @@ public class MessageControllerTest extends WebAppConfigurationAware {
     @Test
     public void messageEmitDateWrongFormat() throws Exception {
         mockMvc.perform(post("/message/emit").param("bus", "Nice").param("box", "City").param("content", "Flic au coin de la rue").param("date", "30-p-2016"))
-                .andExpect(view().name("message/emit"))
-                .andExpect(content().string(
-                        allOf(
-                                containsString("Form contains errors. Please try again."),
-                                containsString("Failed to convert property value of type [java.lang.String] to required type [java.util.Date] for property date")
-                        ))
-                );
+            .andExpect(view().name("message/emit"))
+            .andExpect(content().string(
+                allOf(
+                        containsString("Form contains errors. Please try again."),
+                        containsString("Failed to convert property value of type [java.lang.String] to required type [java.util.Date] for property date")
+                ))
+            );
     }
 
     /**
@@ -99,8 +86,8 @@ public class MessageControllerTest extends WebAppConfigurationAware {
      */
     @Test
     public void messageEmitSuccess() throws Exception {
-        mockMvc.perform(post("/message/emit").param("bus", "Nice").param("box", "City").param("content", "Flic au coin de la rue").param("date", "30-12-2016"))
-                .andExpect(redirectedUrl("/message/emit"));
+        mockMvc.perform(post("/message/emit").param("bus", "Nice Circulation").param("box", "Embouteillage").param("content", "Flic au coin de la rue").param("date", "30-12-2016"))
+            .andExpect(redirectedUrl("/message/emit"));
     }
 
     /**
@@ -109,7 +96,7 @@ public class MessageControllerTest extends WebAppConfigurationAware {
      */
     @Test
     public void messageEmitSuccessWithoutDate() throws Exception {
-        mockMvc.perform(post("/message/emit").param("bus", "Nice").param("box", "City").param("content", "Flic au coin de la rue").param("date", ""))
-                .andExpect(redirectedUrl("/message/emit"));
+        mockMvc.perform(post("/message/emit").param("bus", "Nice Circulation").param("box", "Embouteillage").param("content", "Flic au coin de la rue").param("date", ""))
+            .andExpect(redirectedUrl("/message/emit"));
     }
 }

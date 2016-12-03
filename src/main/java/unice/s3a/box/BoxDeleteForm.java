@@ -1,24 +1,22 @@
 package unice.s3a.box;
 
-import unice.s3a.bus.Bus;
-
-import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * The type Box delete form.
  */
 public class BoxDeleteForm {
     private static final String NOT_BLANK_MESSAGE = "{notBlank.message}";
-    @NotNull(message = NOT_BLANK_MESSAGE)
-    private Box box;
-    @NotNull(message = NOT_BLANK_MESSAGE)
-    private Bus bus;
+    @NotBlank(message = NOT_BLANK_MESSAGE)
+    private String box;
+    @NotBlank(message = NOT_BLANK_MESSAGE)
+    private String bus;
 
     /**
      * Gets box.
      * @return the box
      */
-    public Box getBox() {
+    public String getBox() {
         return box;
     }
 
@@ -26,7 +24,7 @@ public class BoxDeleteForm {
      * Sets box.
      * @param box the box
      */
-    public void setBox(final Box box) {
+    public void setBox(final String box) {
         this.box = box;
     }
 
@@ -34,7 +32,7 @@ public class BoxDeleteForm {
      * Gets bus.
      * @return the bus
      */
-    public Bus getBus() {
+    public String getBus() {
         return bus;
     }
 
@@ -42,7 +40,7 @@ public class BoxDeleteForm {
      * Sets bus.
      * @param bus the bus
      */
-    public void setBus(final Bus bus) {
+    public void setBus(final String bus) {
         this.bus = bus;
     }
 }

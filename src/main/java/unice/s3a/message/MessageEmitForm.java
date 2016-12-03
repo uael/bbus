@@ -1,11 +1,8 @@
 package unice.s3a.message;
 
-import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
-import unice.s3a.box.Box;
-import unice.s3a.bus.Bus;
 
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -13,11 +10,11 @@ import java.util.Date;
  */
 public class MessageEmitForm {
     private static final String NOT_EMPTY_MESSAGE = "{notBlank.message}";
-    @NotNull(message = NOT_EMPTY_MESSAGE)
-    private Bus bus;
-    @NotNull(message = NOT_EMPTY_MESSAGE)
-    private Box box;
-    @NotEmpty(message = NOT_EMPTY_MESSAGE)
+    @NotBlank(message = NOT_EMPTY_MESSAGE)
+    private String bus;
+    @NotBlank(message = NOT_EMPTY_MESSAGE)
+    private String box;
+    @NotBlank(message = NOT_EMPTY_MESSAGE)
     private String content;
     @DateTimeFormat(pattern = "dd-MM-YYYY")
     private Date date;
@@ -26,7 +23,7 @@ public class MessageEmitForm {
      * Gets box.
      * @return the box
      */
-    public Box getBox() {
+    public String getBox() {
         return box;
     }
 
@@ -34,7 +31,7 @@ public class MessageEmitForm {
      * Sets box.
      * @param box the box
      */
-    public void setBox(final Box box) {
+    public void setBox(final String box) {
         this.box = box;
     }
 
@@ -42,7 +39,7 @@ public class MessageEmitForm {
      * Gets bus.
      * @return the bus
      */
-    public Bus getBus() {
+    public String getBus() {
         return bus;
     }
 
@@ -50,7 +47,7 @@ public class MessageEmitForm {
      * Sets bus.
      * @param bus the bus
      */
-    public void setBus(final Bus bus) {
+    public void setBus(final String bus) {
         this.bus = bus;
     }
 

@@ -60,7 +60,7 @@ class MessageController {
             return EMIT;
         }
         busService.emit(messageEmitForm.getBox(), messageEmitForm.getContent(), messageEmitForm.getDate());
-        MessageHelper.addSuccessAttribute(ra, EMIT+".success");
+        MessageHelper.addSuccessAttribute(ra, EMIT+".success", messageEmitForm.getContent());
         return "redirect:/"+EMIT;
     }
 

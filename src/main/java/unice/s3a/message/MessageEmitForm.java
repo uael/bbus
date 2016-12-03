@@ -12,15 +12,15 @@ import java.util.Date;
  * The type Message emit form.
  */
 public class MessageEmitForm {
-    private static final String NOT_EMPTY_MESSAGE = "{notEmpty.message}";
+    private static final String NOT_EMPTY_MESSAGE = "{notBlank.message}";
     @NotNull(message = NOT_EMPTY_MESSAGE)
     private Bus bus;
     @NotNull(message = NOT_EMPTY_MESSAGE)
     private Box box;
     @NotEmpty(message = NOT_EMPTY_MESSAGE)
     private String content;
-    @DateTimeFormat(pattern = "dd-MMM-YYYY")
-    private Date date = null;
+    @DateTimeFormat(pattern = "dd-MM-YYYY")
+    private Date date;
 
     /**
      * Gets box.

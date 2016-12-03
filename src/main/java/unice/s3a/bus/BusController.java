@@ -78,7 +78,7 @@ class BusController {
     }
 
     /**
-     * Create string.
+     * Delete string.
      * @param busDeleteForm the bus delete form
      * @param errors        the errors
      * @param ra            the ra

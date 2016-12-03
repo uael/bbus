@@ -114,15 +114,17 @@ public class Bus implements java.io.Serializable {
     }
 
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) { return true; }
-        if (!(o instanceof Bus)) { return false; }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
         Bus bus = (Bus) o;
-        return getName().equals(bus.getName());
+
+        return name != null ? name.equals(bus.name) : bus.name == null;
     }
 
     @Override
     public int hashCode() {
-        return getName().hashCode();
+        return name != null ? name.hashCode() : 0;
     }
 }

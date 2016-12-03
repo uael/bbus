@@ -89,15 +89,17 @@ public class Box implements java.io.Serializable {
     }
 
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) { return true; }
-        if (!(o instanceof Box)) { return false; }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
         Box box = (Box) o;
-        return getId().equals(box.getId());
+
+        return id != null ? id.equals(box.id) : box.id == null;
     }
 
     @Override
     public int hashCode() {
-        return getId().hashCode();
+        return id != null ? id.hashCode() : 0;
     }
 }

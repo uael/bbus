@@ -32,14 +32,23 @@
             </span>
         </div>
     </th:block>
+        <!-- /* Handle the flash message */-->
+        <th:block th:if="${message != null}">
+            <!-- /* The message code is returned from the @Controller */ -->
+            <div th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(message.type)}, message=#{${message.message}(${#authentication.name})})">&nbsp;</div>
+        </th:block>
     <div class="table-responsive">
-        <table class="table">
+        <table class="table table-hover">
+            <thead>
             <tr>
                 <th>Name</th>
             </tr>
+            </thead>
+            <tbody>
             <tr th:each="bus : ${buses}">
-                <td th:text="${bus.name}">Onions</td>
+                <th scope="row" th:text="${bus.name}">Onions</th>
             </tr>
+            </tbody>
         </table>
     </div>
     <div th:replace="fragments/footer :: footer">&copy; 2013 The Static Templates</div>

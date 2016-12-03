@@ -1,6 +1,7 @@
 package unice.s3a.message;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -61,7 +62,7 @@ class MessageController {
         if (errors.hasErrors()) {
             return EMIT;
         }
-        busService.emit(messageEmitForm.getBox(), messageEmitForm.getContent(), messageEmitForm.getDate());
+        busService.emit(messageEmitForm.getBox().getName(), messageEmitForm.getContent(), messageEmitForm.getDate());
         MessageHelper.addSuccessAttribute(ra, EMIT+".success", messageEmitForm.getContent());
         return "redirect:/"+EMIT;
     }

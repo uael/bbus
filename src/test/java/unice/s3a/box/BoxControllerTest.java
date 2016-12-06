@@ -78,7 +78,7 @@ public class BoxControllerTest extends WebAppConfigurationAware {
      */
     @Test
     public void boxCreateAlreadyExist() throws Exception {
-        mockMvc.perform(post("/box/create").param("bus", "Nice").param("name", "City"))
+        mockMvc.perform(post("/box/create").param("bus", "Nice Circulation").param("name", "Embouteillage"))
             .andExpect(view().name("box/create"))
             .andExpect(content().string(
                 allOf(
@@ -126,7 +126,7 @@ public class BoxControllerTest extends WebAppConfigurationAware {
      */
     @Test
     public void boxDeleteSuccessfully() throws Exception {
-        mockMvc.perform(post("/box/delete").param("bus", "Nice").param("box", "Market"))
+        mockMvc.perform(post("/box/delete").param("bus", "Nice Circulation").param("box", "point"))
             .andExpect(redirectedUrl("/box/delete"));
     }
 }

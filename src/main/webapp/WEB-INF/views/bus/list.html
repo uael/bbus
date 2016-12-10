@@ -35,14 +35,6 @@
     <div class="panel panel-default">
         <!-- Default panel contents -->
         <div class="panel-heading">Managing buses</div>
-        <div class="panel-body">
-            <p>
-                Lorem ipsum dolor sit amet, eam ei nihil volutpat assueverit, modus equidem mediocrem nec id. Possit conceptam vel no, ut pri nostro invidunt. Vel eu lobortis maiestatis, ut essent offendit sed, no est unum vitae appareat. Laoreet perpetua est te, ea invidunt petentium scriptorem usu.
-
-                Eu cum case salutatus, eu omnium nostrud menandri per, est ex dolore aliquam dolorem. Mei at idque euismod, suas latine eu nec, in aperiri accusata recteque sea. Nominati sensibus tincidunt pri ne. Ei sed fugit graecis cotidieque, ei vero eligendi persecuti his. Ius ne lorem postea aliquando. Augue veritus mei ad, an case vitae mandamus usu, quod tritani iuvaret an vis.
-            </p>
-        </div>
-
         <!-- Table -->
         <div class="table-responsive">
             <table class="table table-hover">
@@ -53,35 +45,12 @@
                     <th>Created at</th>
                 </tr>
                 </thead>
-                <tbody class="panel-group" role="tablist" aria-multiselectable="true">
+                <tbody>
                 <th:block th:each="bus : ${buses}">
-                    <tr class="panel-heading" role="tab" th:id="${bus.id}">
+                    <tr>
                         <td scope="row" th:text="${bus.id}"></td>
-                        <th scope="row">
-                            <a role="button" data-toggle="collapse"
-                               th:href="'#collapse-'+${bus.id}" aria-expanded="true"
-                               th:aria-controls="'#collapse-'+${bus.id}" th:text="${bus.name}">
-                            </a>
-                        </th>
+                        <th scope="row" th:text="${bus.name}"></th>
                         <th scope="row" th:text="${bus.created.toString()}"></th>
-                    </tr>
-                    <tr class="collapse" th:id="'collapse-'+${bus.id}" role="tabpanel">
-                        <td scope="row" colspan="3">
-                            <form method="post" th:action="@{/box/edit}">
-                                <div class="form-group">
-                                    <label for="name" class="col-md-3 control-label">Name</label>
-                                    <div class="col-md-9">
-                                        <input type="text" class="form-control" id="name" placeholder="Box name"
-                                               th:name="bus" th:value="${bus.name}" />
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-offset-3 col-md-9">
-                                        <button type="submit" class="btn btn-default">Save</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </td>
                     </tr>
                 </th:block>
                 </tbody>

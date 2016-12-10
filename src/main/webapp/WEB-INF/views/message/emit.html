@@ -62,7 +62,7 @@
             <div class="form-group" th:classappend="${#fields.hasErrors('date')}? 'has-error'">
                 <label for="date" class="col-lg-2 control-label">Expiration date</label>
                 <div class="col-lg-10">
-                    <input type="text" class="form-control" id="date" placeholder="dd-MM-YYYY" th:field="*{date}" />
+                    <input type="text" class="form-control" id="date" placeholder="yyyy-MM-dd H:m:s" th:field="*{date}" />
                     <span class="help-block" th:if="${#fields.hasErrors('date')}" th:errors="*{date}">Incorrect date</span>
                 </div>
             </div>
